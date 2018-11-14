@@ -1,15 +1,16 @@
 {
-  "name": "showmethemoney",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@google-cloud/language": "^2.0.0",
-    "@google-cloud/storage": "^2.3.0"
-  }
+	"name": "showmethemoney",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@google-cloud/language": "^2.0.0",
+		"@google-cloud/storage": "^2.3.0",
+		"request": "^2.88.0"
+	}
 }
