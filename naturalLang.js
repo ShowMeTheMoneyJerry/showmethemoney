@@ -1,16 +1,29 @@
+const run = require('./ryanDev/redditAPItest');
+
 // Imports the Google Cloud client library
 const language = require('@google-cloud/language');
 
 // Instantiates a client
-const client = new language.LanguageServiceClient(
-	{
-		// projectId: 'you-send-me-arti-1542168204862',
-		// keyFilename: 'b299ec4276d3.json'
-	}
-);
+const client = new language.LanguageServiceClient({
+	projectId: 'you-send-me-arti-1542168204862',
+	keyFilename: 'b299ec4276d3.json'
+});
 
 // The text to analyze
-const text = 'Hello, world!';
+let text = '';
+run()
+	.then((result) => {
+		text = result.articles[1].description;
+		return text;
+	})
+	.then((text) => console.log('text!!!!', text));
+
+console.log('second text!!!', text);
+
+// async function result() {
+// 	// return await run().then((result) => result.articles[0].description);
+// 	return await run().articles[0].description;
+// }
 
 const document = {
 	content: text,
