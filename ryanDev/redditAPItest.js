@@ -1,4 +1,3 @@
-let output = {};
 const axios = require('axios');
 const {redditNewsAPI} = require('../secrets');
 
