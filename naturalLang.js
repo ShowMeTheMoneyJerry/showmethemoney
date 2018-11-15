@@ -1,3 +1,5 @@
+//Ben's solution to the promise situation. Wrap entire file in async func
+async function google () {
 const run = require('./ryanDev/redditAPItest');
 
 // Imports the Google Cloud client library
@@ -6,24 +8,17 @@ const language = require('@google-cloud/language');
 // Instantiates a client
 const client = new language.LanguageServiceClient({
 	projectId: 'you-send-me-arti-1542168204862',
-	keyFilename: 'b299ec4276d3.json'
+	keyFilename: '4b1a139bea39.json'
 });
 
-// The text to analyze
-let text = '';
-run()
-	.then((result) => {
-		text = result.articles[1].description;
-		return text;
-	})
-	.then((text) => console.log('text!!!!', text));
+let text = ''
 
-console.log('second text!!!', text);
-
-// async function result() {
-// 	// return await run().then((result) => result.articles[0].description);
-// 	return await run().articles[0].description;
-// }
+await run()
+	.then((data) => data.articles[1].description)
+	.then((description) => {
+		text = text + description
+	});
+//console.log(text);
 
 const document = {
 	content: text,
@@ -43,29 +38,6 @@ client
 	.catch((err) => {
 		console.error('ERROR:', err);
 	});
-
-// 	// Imports the Google Cloud client library.
-// const {Storage} = require('@google-cloud/storage');
-
-// // Instantiates a client. Explicitly use service account credentials by
-// // specifying the private key file. All clients in google-cloud-node have this
-// // helper, see https://github.com/GoogleCloudPlatform/google-cloud-node/blob/master/docs/authentication.md
-// const storage = new Storage({
-//   projectId: 'project-id',
-//   keyFilename: '/path/to/keyfile.json'
-// });
-
-// // Makes an authenticated API request.
-// storage
-//   .getBuckets()
-//   .then((results) => {
-//     const buckets = results[0];
-
-//     console.log('Buckets:');
-//     buckets.forEach((bucket) => {
-//       console.log(bucket.name);
-//     });
-//   })
-//   .catch((err) => {
-//     console.error('ERROR:', err);
-// 	});
+}
+//call the function at the end
+google()
