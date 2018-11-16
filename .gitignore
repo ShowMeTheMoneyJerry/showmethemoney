@@ -1,9 +1,8 @@
 node_modules
 .DS_STORE
-bundle.*
-public/bundle.js
-public/bundle.js.map
 secrets.js
 npm-debug.log
 yarn-error.log
 4b1a139bea39.json
+build
+secrets.*.js
