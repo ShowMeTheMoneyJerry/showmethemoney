@@ -14,13 +14,12 @@
 		"@google-cloud/storage": "^2.3.0",
 		"axios": "^0.18.0",
 		"react": "^16.6.3",
-		"react-dom": "^16.6.3",
-		"request": "^2.88.0"
+		"react-dom": "^16.6.3"
 	},
 	"devDependencies": {
-		"babel-core": "^6.17.0",
+		"@babel/core": "^7.1.6",
+		"@babel/preset-react": "^7.0.0",
 		"babel-loader": "^6.2.4",
-		"babel-preset-react": "^6.16.0",
 		"clean-webpack-plugin": "^0.1.17",
 		"copy-webpack-plugin": "^4.2.0",
 		"css-loader": "^0.25.0",
