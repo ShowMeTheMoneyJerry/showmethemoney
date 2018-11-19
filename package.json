@@ -20,6 +20,7 @@
 		"react": "^16.6.3",
 		"react-chrome-redux": "^2.0.0-alpha.4",
 		"react-dom": "^16.6.3",
+		"react-redux": "^5.1.1",
 		"redux": "^4.0.1",
 		"redux-devtools-extension": "^2.13.5",
 		"redux-logger": "^3.0.6",
