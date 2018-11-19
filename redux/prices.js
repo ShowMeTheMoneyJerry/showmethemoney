@@ -10,16 +10,19 @@ export const setCurrentPrice = price => ({
   price,
 });
 // Thunk Creator
-export const fetchCurrentStockPrice = async company => {
+export const fetchCurrentStockPrice = (company) => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/price`;
-    const price = await axios.get(url);
-    return price.data;
+    const {data: price} = await axios.get(url);
 
+    dispatch(setCurrentPrice(price))
+
+    //return price.data;
   } catch (error) {
     console.error(error)
   }
 };
+
 
 // Reducer
 
