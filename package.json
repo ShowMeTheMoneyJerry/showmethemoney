@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@google-cloud/language": "^2.0.0",
 		"@google-cloud/storage": "^2.3.0",
+		"@material-ui/core": "^3.5.1",
 		"axios": "^0.18.0",
 		"cheerio": "^1.0.0-rc.2",
 		"jQuery": "^1.7.4",
@@ -27,7 +28,9 @@
 	"devDependencies": {
 		"@babel/core": "^7.1.6",
 		"@babel/preset-react": "^7.0.0",
-		"babel-loader": "^8.0.4",
+		"babel-core": "^6.17.0",
+		"babel-loader": "^6.2.4",
+		"babel-preset-react": "^6.16.0",
 		"clean-webpack-plugin": "^0.1.17",
 		"copy-webpack-plugin": "^4.2.0",
 		"css-loader": "^0.25.0",
