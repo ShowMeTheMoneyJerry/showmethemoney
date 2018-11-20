@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {hot} from 'react-hot-loader';
 import Button from '@material-ui/core/Button';
 import {connect} from 'react-redux';
+import {fetchCurrentStockPrice} from '../store';
 
 class GreetingComponent extends Component {
 	constructor(props) {
@@ -9,16 +10,19 @@ class GreetingComponent extends Component {
 	}
 
 	componentDidMount() {
-		setInterval(() => {
-			this.props.dispatch({
-				type: 'ADD_COUNT'
-			});
-		}, 1000);
+		// setInterval(() => {
+		//
+		// }, 1000);
+		this.props.getStockPrice('aapl');
 	}
 	render() {
+		if (!this.props.prices) {
+			return <div>Oops, we broke it</div>;
+		}
 		return (
 			<div>
-				<h1>This is an h1 tag: {this.props.count}</h1>
+				<h1>This is articles test: {this.props.count}</h1>
+				<h1>This is prices: {this.props.prices}</h1>
 				<p>this is a p tag</p>
 				<img src="https://i.imgur.com/7CXBltb.jpg" />
 				<Button color="primary">Hello World!</Button>
@@ -28,13 +32,13 @@ class GreetingComponent extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	count: state.articles
+const mapState = (state) => ({
+	count: state.articles,
+	prices: state.prices
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-// 	loadOrder: (orderId) => dispatch(fetchOrder(orderId))
-// });
+const mapDispatch = (dispatch) => ({
+	getStockPrice: (company) => dispatch(fetchCurrentStockPrice(company))
+});
 
-export default connect(mapStateToProps)(GreetingComponent);
-// hot(module)
+export default connect(mapState, mapDispatch)(hot(module)(GreetingComponent));
