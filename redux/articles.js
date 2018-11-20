@@ -3,10 +3,10 @@ const getArticleData = require('../getArticleData')
 
 
 // Action Types
-const SET_RECENT_ARTICLES = 'SET_RECENT_ARTICLES';
+export const SET_RECENT_ARTICLES = 'SET_RECENT_ARTICLES';
 // Action Creators
 export const setRecentArticles = articles => ({
-  type: SET_RECENT_ARTICLES,
+  type: 'SET_RECENT_ARTICLES',
   articles,
 });
 // Thunk Creator

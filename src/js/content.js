@@ -6,6 +6,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Store} from 'react-chrome-redux';
 import {Provider} from 'react-redux';
+import store from './store'
 
 const proxyStore = new Store({
 	portName: 'MakesCents'
@@ -17,7 +18,7 @@ anchor.id = 'apple';
 window.document.body.prepend(anchor);
 
 render(
-	<Provider store={proxyStore}>
+	<Provider store={store}>
 		<Greeting />
 	</Provider>,
 	window.document.getElementById('apple')
