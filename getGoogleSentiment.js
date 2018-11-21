@@ -20,10 +20,12 @@ const getGoogleSentiment = async (text) => {
   //send text to google for sentiment---------------------------
   try {
     let result = await client.analyzeSentiment({ document: document })
-    return result[0].documentSentiment
-    //   console.log(`Text: ${text}`);
-    //   console.log(`Sentiment score: ${sentiment.score}`);
-   //   console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+    let sentiment = result[0].documentSentiment
+    // console.log('sentiment ------------------', sentiment);
+    // console.log(`Text: ${text}`);
+    // console.log(`Sentiment score: ${sentiment.score}`);
+    // console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
+    return sentiment
   } catch (error) {
     console.error(error)
   }

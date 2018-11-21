@@ -1,7 +1,7 @@
 import {stockData, sentimentData} from './sampleData'
 import React, {Component} from 'react';
 import {Line} from 'react-chartjs-2';
-import {fetchCurrentStockPrice} from '../store';
+import {fetchCurrentStockPrice, fetchHistoricalPrices} from '../store';
 import {connect} from 'react-redux';
 
 
@@ -122,12 +122,13 @@ const plugins = [{
 };
 
 const mapState = (state) => ({
-	count: state.articles,
-	prices: state.prices
+  prices: state.prices,
+	articles: state.articles,
 });
 
 const mapDispatch = (dispatch) => ({
-  getStockPrice: (company) => dispatch(fetchCurrentStockPrice(company))
+  getStockPrice: (company) => dispatch(fetchCurrentStockPrice(company)),
+  getHistoricalPrices: (company, time) => dispatch(fetchHistoricalPrices(company, time))
 
 });
 

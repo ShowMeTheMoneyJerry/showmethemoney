@@ -9,6 +9,7 @@ const yahooNewsFetch = async (company, time) => {
   // initialize data storage -----------------------------
   const items = [];
   const dates = [];
+  const titles = [];
   // -----------------------------------------------------
   // parse XML from rss feed -----------------------------
   const $ = await cheerio.load(fetchedArticles.data);
@@ -19,6 +20,11 @@ const yahooNewsFetch = async (company, time) => {
     items[i] = $(this).text();
     dates.push(
       $('pubDate')
+        .eq(i)
+        .text()
+    );
+    titles.push(
+      $('title')
         .eq(i)
         .text()
     );
@@ -34,7 +40,7 @@ const yahooNewsFetch = async (company, time) => {
       parsedArticles.push({
         link: item.slice(httpIndex, rssIndex + 3),
         date: dates[index],
-        //title:
+        title: titles[index]
       });
     }
     //-----------------------------------------------

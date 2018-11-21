@@ -12,29 +12,31 @@ const getArticleData = async (company, time) => {
 
   //---------------------------------------------------------------
   //start fetching articles-------------------------
+  console.log('hi');
   let newArticles = await yahooNewsFetch(company, time);
   //let newArticles = await yahooNewsFetch('aapl', 60000000);
 
   if (newArticles.length > 0) {
     //formate article into 1,000 chars---------------------------
     for (let i = 0; i < newArticles.length; i++) {
-      //console.log(newArticles[0])
+      console.log(newArticles[i])
       let unit = newArticles[i].content.substring(0, 999);
       //---------------------------------------------------------------
       //send text to google for sentiment---------------------------v
       //********************************
             //format sentimentResult from decimal (-1 to 1) to number (-100 to 100)
-            let sentimentResult = await getGoogleSentiment(unit).score * 100;
+            let sentimentResult = await getGoogleSentiment(unit)
+            let sentimentScore = Math.floor(sentimentResult.score * 100)
       //********************************
 
       // console.log('returned from googlesent Func----', sentimentResult);
       //-------------------------------
       //put newArticles into storage--------------------------------
       let returnObject = {
-        sentiment: sentimentResult,
+        sentiment: sentimentScore,
         link: newArticles[i].link,
         date: newArticles[i].date,
-        //title:
+        title: newArticles[i].title
       };
       resultArray.push(returnObject);
     }
@@ -53,5 +55,5 @@ const getArticleData = async (company, time) => {
 // module.exports = {
 //   getArticleData,
 // }
-getArticleData('aapl', 60000000)
+getArticleData('aapl', 600000)
 //export default getArticleData;
