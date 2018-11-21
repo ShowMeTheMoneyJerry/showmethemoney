@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import InfoIcon from "@material-ui/icons/Info";
 import green from "@material-ui/core/colors/green";
 import { Switch } from "@material-ui/core";
+import ArticleList from "./components/ArticleList";
 
 const styles = theme => ({
   root: {
@@ -64,7 +65,7 @@ class popUpHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "home"
+      view: "articleList"
     };
   }
 
@@ -133,7 +134,7 @@ class popUpHome extends React.Component {
       case "articleList":
         return (
           <div>
-            <ArticleList />
+            <ArticleList name={companyArray[0].name} />
           </div>
         );
     }
