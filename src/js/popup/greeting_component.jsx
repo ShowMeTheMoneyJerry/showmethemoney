@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import InfoIcon from "@material-ui/icons/Info";
 import green from "@material-ui/core/colors/green";
+import { Switch } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -61,6 +62,9 @@ const styles = theme => ({
 class popUpHome extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      view: "home"
+    };
   }
 
   render() {
@@ -68,45 +72,70 @@ class popUpHome extends React.Component {
       {
         name: "AAPL",
         price: "$ 200.12",
-        sentiment: "30%"
+        view: "30%"
       },
       {
         name: "SPCX",
         price: "$ 20.56",
-        sentiment: "100%"
+        view: "100%"
       },
       {
         name: "TSLA",
         price: "$ 80.00",
-        sentiment: "90%"
+        view: "90%"
       }
     ];
     const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <h1 style={{ fontFamily: "Impact", fontSize: 33, color: "white" }}>
-          MakeCent$
-        </h1>
-        <List className={classes.list}>
-          {companyArray.map(company => {
-            return (
-              <ListItem key={company.name} className={classes.listItem}>
-                <Button className={classes.listItemNameButton} color="inherit">
-                  {company.name}
-                </Button>
-                <Button className={classes.listItemDataButton}>
-                  <div>{`Price: ${company.price}`}</div>
-                  <div>{`Sentim: ${company.sentiment}`}</div>
-                </Button>
-                <Button className={classes.listItemInfoButton}>
-                  <InfoIcon />
-                </Button>
-              </ListItem>
-            );
-          })}
-        </List>
-      </div>
-    );
+
+    switch (this.state.view) {
+      case "home":
+        return (
+          <div className={classes.root}>
+            <h1 style={{ fontFamily: "Impact", fontSize: 33, color: "white" }}>
+              MakeCent$
+            </h1>
+            <List className={classes.list}>
+              {companyArray.map(company => {
+                return (
+                  <ListItem key={company.name} className={classes.listItem}>
+                    <Button
+                      className={classes.listItemNameButton}
+                      color="inherit"
+                    >
+                      {company.name}
+                    </Button>
+                    <Button className={classes.listItemDataButton}>
+                      <div>{`Price: ${company.price}`}</div>
+                      <div>{`view: ${company.view}`}</div>
+                    </Button>
+                    <Button className={classes.listItemInfoButton}>
+                      <InfoIcon />
+                    </Button>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </div>
+        );
+      case "settings":
+        return (
+          <div>
+            <Setting name={companyArray[0].name} />)
+          </div>
+        );
+      case "chart":
+        return (
+          <div>
+            <Chart />
+          </div>
+        );
+      case "articleList":
+        return (
+          <div>
+            <ArticleList />
+          </div>
+        );
+    }
   }
 }
 
