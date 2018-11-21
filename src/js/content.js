@@ -1,4 +1,4 @@
-console.log('Hey Ben! content.js is working!');
+console.log("Hey Ben! content.js is working!");
 
 import '../css/popup.css';
 import Greeting from './content/home.jsx';
@@ -9,11 +9,11 @@ import {Provider} from 'react-redux';
 import store from './store'
 
 const proxyStore = new Store({
-	portName: 'MakesCents'
+  portName: "MakesCents"
 });
 
-const anchor = document.createElement('div');
-anchor.id = 'apple';
+const anchor = document.createElement("div");
+anchor.id = "apple";
 
 window.document.body.prepend(anchor);
 

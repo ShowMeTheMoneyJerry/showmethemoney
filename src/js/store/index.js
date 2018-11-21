@@ -21,5 +21,5 @@ wrapStore(store, {
 });
 
 export default store;
-export * from './articles';
-export * from './prices';
+export * from "./articles";
+export * from "./prices";

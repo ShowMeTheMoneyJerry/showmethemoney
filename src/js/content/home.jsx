@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { fetchMostRecentPrice, fetchHistoricalPrices } from '../store';
+import { fetchMostRecentPrice, fetchHistoricalPrices, fetchCurrentStockPrice } from '../store';
 import Chart from './Chart';
+import Sidebar from "./Sidebar";
 
 class GreetingComponent extends Component {
   constructor(props) {
