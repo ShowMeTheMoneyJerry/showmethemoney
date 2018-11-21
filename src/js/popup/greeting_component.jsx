@@ -3,7 +3,7 @@ import icon from '../../img/icon-128.png';
 import { hot } from 'react-hot-loader';
 // import {Button} from 'react-toolbox/lib/button';
 import Button from '@material-ui/core/Button';
-import Chart from './Chart';
+// import Chart from './Chart';
 
 class GreetingComponent extends React.Component {
   render() {
@@ -11,7 +11,7 @@ class GreetingComponent extends React.Component {
       <div>
         <p>this is a p tag</p>
         <img src={icon} />
-        <Chart />
+        {/* <Chart /> */}
       </div>
     );
   }

@@ -19,10 +19,8 @@ export const setHistoricalArticles = articles => ({
 //Thunk Creator
 export const fetchMostRecentPrice = (company, time) => async dispatch => {
   try {
-    const { data } = await getArticleData(company, time)
+    const { data } = await getArticleData(company, time);
     console.log('this is the shape of price is right: ', data);
-
-
 
     dispatch(setMostRecentArticle(data));
   } catch (error) {
@@ -36,8 +34,6 @@ export const fetchHistoricalArticles = (company, time) => async dispatch => {
     const { data } = await axios.get(url);
     console.log('this is the shape of historical prices: ', data);
 
-
-
     dispatch(setHistoricalArticles(data));
   } catch (error) {
     console.error(error);
@@ -50,46 +46,54 @@ const initialState = {
   historicalArticles: [
     {
       sentiment: 10,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 15 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: 40,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 16 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: -30,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 17 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: -50,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 19 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: 0,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 19 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: 10,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 20 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
+      title: '10 High-Tech Gifts That Cost Less Than $100',
     },
     {
       sentiment: 70,
-      link: 'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
+      link:
+        'https://finance.yahoo.com/news/tim-cook-spends-first-two-133404480.html?.tsrc=rss',
       date: 'Tue, 21 Nov 2018 13:34:04 +0000',
-      title: '10 High-Tech Gifts That Cost Less Than $100'
-    }]
+      title: '10 High-Tech Gifts That Cost Less Than $100',
+    },
+  ],
 };
 
 const articlesReducer = (state = initialState, action) => {

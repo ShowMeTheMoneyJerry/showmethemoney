@@ -12,30 +12,26 @@ const plugins = [
   },
 ];
 
-class Chart extends Component {
-  async componentDidMount() {
-    // setInterval(async () => {
-    // await this.props.getStockPrice('aapl');
-    // console.log('prrrroooops', this.props.prices.recentPrice);
-    await this.props.getHistoricalPrices('aapl');
-    console.log(
-      'are we getting historical prices?',
-      this.props.prices.historicalPrices
-    );
-    // }, 1000);
-  }
-
+export default class Chart extends Component {
   render() {
+    const historicalClosePrices = this.props.historicalClosePrices;
+    const historicalArticlesArr = this.props.historicalArticlesArr.map(
+      elem => elem.sentiment
+    );
+
+    let weekAxis = [];
+    for (let i = 6; i >= 0; i--) {
+      let date = new Date(new Date() - 86400000 * i);
+      weekAxis.push(date.toString().slice(0, 15));
+    }
+
     const data = {
-      labels: this.props.prices,
+      labels: weekAxis,
       datasets: [
         {
           label: 'Stock Price',
           type: 'line',
-          // data: stockData.map(day => {
-          //          return day.close
-          //         }),
-          data: this.props.prices,
+          data: historicalClosePrices,
           fill: false,
           borderColor: '#EC932F',
           backgroundColor: '#EC932F',
@@ -43,18 +39,18 @@ class Chart extends Component {
           pointBackgroundColor: '#EC932F',
           pointHoverBackgroundColor: '#EC932F',
           pointHoverBorderColor: '#EC932F',
-          yAxisID: 'y-axis-2',
+          yAxisID: 'y-axis-1',
         },
         {
           type: 'line',
           label: 'Sentiment Rating',
-          data: [1],
+          data: historicalArticlesArr,
           fill: false,
           backgroundColor: '#71B37C',
           borderColor: '#71B37C',
           hoverBackgroundColor: '#71B37C',
           hoverBorderColor: '#71B37C',
-          yAxisID: 'y-axis-1',
+          yAxisID: 'y-axis-2',
         },
       ],
     };
@@ -102,6 +98,10 @@ class Chart extends Component {
             gridLines: {
               display: false,
             },
+            ticks: {
+              max: 100,
+              min: -100,
+            },
             // labels: {
             //   show: true
             // }
@@ -120,19 +120,3 @@ class Chart extends Component {
     );
   }
 }
-
-const mapState = state => ({
-  prices: state.prices,
-  articles: state.articles.historicalArticles,
-});
-
-const mapDispatch = dispatch => ({
-  getStockPrice: company => dispatch(fetchMostRecentPrice(company)),
-  getHistoricalPrices: (company, time) =>
-    dispatch(fetchHistoricalPrices(company, time)),
-});
-
-export default connect(
-  mapState,
-  mapDispatch
-)(Chart);
