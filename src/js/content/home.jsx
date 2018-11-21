@@ -14,7 +14,7 @@ class GreetingComponent extends Component {
     // setInterval(() => {
     //
     // }, 1000);
-    this.props.getStockPrice("aapl");
+    // this.props.getStockPrice("aapl");
   }
   render() {
     if (!this.props.prices) {

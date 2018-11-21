@@ -5,12 +5,10 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import articles from "./articles";
 import prices from "./prices";
-import ui from "./ui";
 
 const reducer = combineReducers({
   articles,
-  prices,
-  ui
+  prices
 });
 
 const middleware = composeWithDevTools(
@@ -24,4 +22,3 @@ wrapStore(store, {
 export default store;
 export * from "./articles";
 export * from "./prices";
-export * from "./ui";
