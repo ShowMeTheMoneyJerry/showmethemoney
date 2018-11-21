@@ -1,5 +1,5 @@
 // Imports the Google Cloud client library
-const language = require('@google-cloud/language');
+const language = require('@google-cloud/language')
 
 // //initialize Google sentiment client and variables---------------
 const client = new language.LanguageServiceClient({
@@ -7,10 +7,12 @@ const client = new language.LanguageServiceClient({
   keyFilename: '4b1a139bea39.json',
 });
 
-export const getGoogleSentiment = async (text) => {
+const getGoogleSentiment = async (text) => {
   //let newSentiment;
   //let text = 'sad sad sad sad ';
   const document = {
+    //content: text, 'sad, sad, sad'
+
     content: text,
     type: 'PLAIN_TEXT',
   };
@@ -35,6 +37,6 @@ export const getGoogleSentiment = async (text) => {
 // };
 //getGoogleSentiment(document)
 
-// module.exports = {
-//   getGoogleSentiment
-// }
+module.exports = {
+  getGoogleSentiment
+}

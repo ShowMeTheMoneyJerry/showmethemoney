@@ -1,9 +1,9 @@
 //Ben's solution to the promise situation. Wrap entire file in async func
 //const fetchNews = require('./redditAPItest');
-const {yahooNewsFetch} = require('./yahooNewsFetch');
+const { yahooNewsFetch } = require('./yahooNewsFetch');
 const { getGoogleSentiment } = require('./getGoogleSentiment');
 
- const  getArticleData = async (company, time) => {
+const getArticleData = async (company, time) => {
   //let testCompany = 'aapl'; //sample case
 
   //let time = new Date() - 6000000; //0000 //fetch current date and time
@@ -13,6 +13,8 @@ const { getGoogleSentiment } = require('./getGoogleSentiment');
   //---------------------------------------------------------------
   //start fetching articles-------------------------
   let newArticles = await yahooNewsFetch(company, time);
+  //let newArticles = await yahooNewsFetch('aapl', 60000000);
+
   if (newArticles.length > 0) {
     //formate article into 1,000 chars---------------------------
     for (let i = 0; i < newArticles.length; i++) {
@@ -20,7 +22,11 @@ const { getGoogleSentiment } = require('./getGoogleSentiment');
       let unit = newArticles[i].content.substring(0, 999);
       //---------------------------------------------------------------
       //send text to google for sentiment---------------------------v
-      let sentimentResult = await getGoogleSentiment(unit);
+      //********************************
+            //format sentimentResult from decimal (-1 to 1) to number (-100 to 100)
+            let sentimentResult = await getGoogleSentiment(unit).score * 100;
+      //********************************
+
       // console.log('returned from googlesent Func----', sentimentResult);
       //-------------------------------
       //put newArticles into storage--------------------------------
@@ -32,20 +38,20 @@ const { getGoogleSentiment } = require('./getGoogleSentiment');
       };
       resultArray.push(returnObject);
     }
-    return resultArray
+    return resultArray;
   } else {
-    //console.log('no new articles ' + new Date());
+    console.log('no new articles ' + new Date());
   }
 
   // console.log(
   //   `${testCompany} stock price is $${currentPrice} at ${new Date(time)}`
   // );
   // console.log('------------------------------------------------');
-}
+};
 //getArticleData(company)
 
 // module.exports = {
 //   getArticleData,
-// };
-
-export default getArticleData;
+// }
+getArticleData('aapl', 60000000)
+//export default getArticleData;

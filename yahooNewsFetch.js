@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-export const yahooNewsFetch = async (company, time) => {
+const yahooNewsFetch = async (company, time) => {
 
   // fetch articles from yahoo ---------------------------
   let url = `http://finance.yahoo.com/rss/headline?s=${company}`;
@@ -55,9 +55,9 @@ export const yahooNewsFetch = async (company, time) => {
   return parsedArticles;
 };
 
-//  let sampleCompany = 'aapl';
-//  yahooNewsFetch(sampleCompany, (new Date() - 6000000));
+  let sampleCompany = 'aapl';
+ yahooNewsFetch(sampleCompany, (new Date() - 600000000));
 
-// module.exports = {
-//   yahooNewsFetch
-// }
+module.exports = {
+  yahooNewsFetch
+}

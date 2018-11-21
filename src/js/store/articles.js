@@ -1,6 +1,5 @@
 const axios = require('axios');
- const getArticleData = require('./getArticleData')
-// import getArticleData from '../../services/getArticleData.js'
+//const getArticleData = require('../../../getArticleData')
 
 //Action Types
 export const SET_MOST_RECENT_ARTICLE = 'SET_MOST_RECENT_ARTICLE';
@@ -8,12 +7,12 @@ export const SET_HISTORICAL_ARTICLES = 'SET_HISTORICAL_ARTICLES';
 
 // Action Creators
 export const setMostRecentArticle = article => ({
-  type: 'SET_MOST_RECENT_PRICE',
+  type: 'SET_MOST_RECENT_ARTICLE',
   article,
 });
 
 export const setHistoricalArticles = articles => ({
-  type: 'SET_HISTORICAL_PRICES',
+  type: 'SET_HISTORICAL_ARTICLES',
   articles,
 });
 
@@ -31,7 +30,7 @@ export const fetchMostRecentPrice = (company, time) => async dispatch => {
   }
 };
 
-export const fetchHistoricalPrices = (company, time) => async dispatch => {
+export const fetchHistoricalArticles = (company, time) => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/chart/${time}`;
     const { data } = await axios.get(url);
@@ -47,8 +46,8 @@ export const fetchHistoricalPrices = (company, time) => async dispatch => {
 
 // Reducer
 const initialState = {
-  recentArticle: 0,
-  historicalArticles: [],
+  recentArticle: {},
+  historicalArticles: [{}, 50, 70, -10, -50, 0, 10],
 };
 
 const articlesReducer = (state = initialState, action) => {
