@@ -8,23 +8,20 @@ import {Provider} from 'react-redux';
 import {createLogger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
 const proxyStore = new Store({
 	portName: 'MakesCents'
 });
 
-const middleware = composeWithDevTools(thunkMiddleware, createLogger({collapsed: true}));
-
 // Apply middleware to proxy store
-const storeWithMiddleware = applyMiddleware(proxyStore, middleware);
+export const storeWithMiddleware = applyMiddleware(proxyStore, thunkMiddleware, createLogger({collapsed: true}));
 
 // You can now dispatch a function from the proxy store
 storeWithMiddleware.dispatch((dispatch, getState) => {
 	// Regular dispatches will still be routed to the background
 	dispatch({type: 'start-async-action'});
-	setTimeout(() => {
-		dispatch({type: 'complete-async-action'});
-	}, 0);
+	dispatch({type: 'INCREMENT_PRICE'});
 });
 
 proxyStore.ready().then(() => {

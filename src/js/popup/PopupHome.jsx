@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Button from '@material-ui/core/Button';
 // import {getSession} from '..store/aliases'
 // import aliases from '../store/aliases';
+import {setCurrentPrice, fetchCurrentStockPrice} from '../store/prices';
 
 class PopupHome extends React.Component {
 	constructor(props) {
@@ -11,9 +12,9 @@ class PopupHome extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.props.getStockPrice('aapl');
-		this.props.dispatch(getSession());
-		console.log(this.props.prices);
+		// this.props.dispatch({type: 'INCREMENT_PRICE'});
+		this.props.setPrice(15);
+		this.props.getPrice('aapl');
 	}
 	render() {
 		if (!this.props.prices) {
@@ -22,8 +23,8 @@ class PopupHome extends React.Component {
 		return (
 			<div>
 				<h1>prices: {this.props.prices}</h1>
-				<h1>count: {this.props.articles}</h1>
-				<Button color="primary">Button M</Button>
+				<h1>count: {this.props.articles.articles[0]}</h1>
+				<Button color="primary">Button 1</Button>
 				<Button color="primary">Button 2</Button>
 			</div>
 		);
@@ -31,8 +32,13 @@ class PopupHome extends React.Component {
 }
 
 const mapState = (state) => ({
-	count: state.articles,
+	articles: state.articles,
 	prices: state.prices
 });
 
-export default connect(mapState)(hot(module)(PopupHome));
+const mapDispatch = (dispatch) => ({
+	setPrice: (num) => dispatch(setCurrentPrice(num)),
+	getPrice: (company) => dispatch(fetchCurrentStockPrice(company))
+});
+
+export default connect(mapState, mapDispatch)(hot(module)(PopupHome));
