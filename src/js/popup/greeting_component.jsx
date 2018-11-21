@@ -9,12 +9,15 @@ import InfoIcon from "@material-ui/icons/Info";
 import green from "@material-ui/core/colors/green";
 import { Switch } from "@material-ui/core";
 import ArticleList from "./components/ArticleList";
+import Chart from "./components/Chart";
+// import Layout from "./components/Layout";
 
 const styles = theme => ({
   root: {
     display: "flex",
     backgroundColor: "#333",
     flexDirection: "column",
+
     alignItems: "center"
   },
   list: {
@@ -65,7 +68,7 @@ class popUpHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "articleList"
+      view: "chart"
     };
   }
 
@@ -126,9 +129,10 @@ class popUpHome extends React.Component {
           </div>
         );
       case "chart":
+        // layout
         return (
           <div>
-            <Chart />
+            <Chart name={companyArray[0].name} />
           </div>
         );
       case "articleList":
