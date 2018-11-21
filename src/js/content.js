@@ -1,24 +1,43 @@
-console.log('Hey Ben! content.js is working!');
+console.log('Hey Ryan! content.js is working!');
 
-import '../css/popup.css';
-import Greeting from './content/home.jsx';
+import ContentHome from './content/home.jsx';
 import React from 'react';
 import {render} from 'react-dom';
-import {Store} from 'react-chrome-redux';
+import {Store, applyMiddleware} from 'react-chrome-redux';
 import {Provider} from 'react-redux';
+
+import {createLogger} from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
 const proxyStore = new Store({
 	portName: 'MakesCents'
 });
 
-const anchor = document.createElement('div');
-anchor.id = 'apple';
+// Apply middleware to proxy store
+const storeWithMiddleware = applyMiddleware(
+	proxyStore,
+	composeWithDevTools(thunkMiddleware, createLogger({collapsed: true}))
+);
 
+// You can now dispatch a function from the proxy store
+storeWithMiddleware.dispatch((dispatch, getState) => {
+	// Regular dispatches will still be routed to the background
+	dispatch({type: 'start-async-action'});
+});
+
+// This anchor is what we use to inject code into the browser
+const anchor = document.createElement('nav');
+anchor.id = 'app';
 window.document.body.prepend(anchor);
 
-render(
-	<Provider store={proxyStore}>
-		<Greeting />
-	</Provider>,
-	window.document.getElementById('apple')
-);
+proxyStore.ready().then(() => {
+	// The store implements the same interface as Redux's store
+	// so you can use tools like `react-redux` no problem!
+	render(
+		<Provider store={proxyStore}>
+			<ContentHome />
+		</Provider>,
+		window.document.getElementById('app')
+	);
+});

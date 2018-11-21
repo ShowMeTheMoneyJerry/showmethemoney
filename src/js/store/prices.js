@@ -1,10 +1,10 @@
-const axios = require('axios');
+import axios from 'axios';
 
 // Action Types
-const SET_CURRENT_PRICE = 'SET_CURRENT_PRICE';
+export const SET_CURRENT_PRICE = 'SET_CURRENT_PRICE';
 // Action Creators
 export const setCurrentPrice = (price) => ({
-	type: SET_CURRENT_PRICE,
+	type: 'SET_CURRENT_PRICE',
 	price
 });
 // Thunk Creator
@@ -14,9 +14,7 @@ export const fetchCurrentStockPrice = (company) => async (dispatch) => {
 		const {data} = await axios.get(url);
 		console.log('this is the shape of price is right: ', data);
 
-		// dispatch(setCurrentPrice(price));
-
-		//return price.data;
+		dispatch({type: 'SET_CURRENT_PRICE', data});
 	} catch (error) {
 		console.error(error);
 	}
@@ -24,12 +22,7 @@ export const fetchCurrentStockPrice = (company) => async (dispatch) => {
 
 // Reducer
 
-const initialState = {
-	currentPrice: {}
-	// allPrices: []
-};
-
-const pricesReducer = (state = [], action) => {
+const pricesReducer = (state = 13, action) => {
 	switch (action.type) {
 		case SET_CURRENT_PRICE:
 			return action.price;

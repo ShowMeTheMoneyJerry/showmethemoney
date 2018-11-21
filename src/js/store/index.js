@@ -11,12 +11,15 @@ const reducer = combineReducers({
 	prices
 });
 
-const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({collapsed: true})));
-const store = createStore(reducer, middleware);
+// const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({collapsed: true})));
+
+// const store = createStore(reducer, middleware);
+const store = createStore(reducer);
 
 wrapStore(store, {
 	portName: 'MakesCents'
 });
+
 export default store;
 export * from './articles';
 export * from './prices';
