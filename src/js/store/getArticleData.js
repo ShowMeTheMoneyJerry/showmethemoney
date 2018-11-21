@@ -1,9 +1,9 @@
 //Ben's solution to the promise situation. Wrap entire file in async func
-async function getArticleData(company, time) {
-  //const fetchNews = require('./redditAPItest');
-  const yahooNewsFetch = require('./yahooNewsFetch');
-  const { getGoogleSentiment } = require('./getGoogleSentiment');
+//const fetchNews = require('./redditAPItest');
+const {yahooNewsFetch} = require('./yahooNewsFetch');
+const { getGoogleSentiment } = require('./getGoogleSentiment');
 
+ const  getArticleData = async (company, time) => {
   //let testCompany = 'aapl'; //sample case
 
   //let time = new Date() - 6000000; //0000 //fetch current date and time
@@ -28,6 +28,7 @@ async function getArticleData(company, time) {
         sentiment: sentimentResult,
         link: newArticles[i].link,
         date: newArticles[i].date,
+        //title:
       };
       resultArray.push(returnObject);
     }
@@ -43,6 +44,8 @@ async function getArticleData(company, time) {
 }
 //getArticleData(company)
 
-module.exports = {
-  getArticleData,
-};
+// module.exports = {
+//   getArticleData,
+// };
+
+export default getArticleData;

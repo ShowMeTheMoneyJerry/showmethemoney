@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { fetchMostRecentPrice } from '../store';
+import { fetchMostRecentPrice, fetchHistoricalPrices} from '../store';
 // import Chart from './Chart'
 
 class GreetingComponent extends Component {
@@ -15,17 +15,21 @@ class GreetingComponent extends Component {
     //
     // }, 1000);
     // console.log('prrrroooops', this.props)
-    this.props.getMostRecentPrice('aapl');
+    this.props.getHistoricalPrices('aapl', '5d');
   }
   render() {
     if (this.props.prices.recentPrice === undefined) {
       return <div>Oops, ehat broke it</div>;
     }
-    console.log('this.props.prices--->', this.props.prices.recentPrice);
+    console.log('this.props.prices--->', this.props.prices.historicalPrices.map(el => {
+			return el.close
+		}));
     return (
       <div>
         {/* <h1>This is articles test: {this.props.count}</h1> */}
-        <h1>This is prices: {this.props.prices.recentPrice}</h1>
+        <h1>This is prices: {this.props.prices.historicalPrices.map(el => {
+					return el.close
+				})}</h1>
         <p>this is a p tag</p>
         {/* <Chart /> */}
         <img src="https://i.imgur.com/7CXBltb.jpg" />
@@ -42,7 +46,8 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  getMostRecentPrice: company => dispatch(fetchMostRecentPrice(company)),
+	getMostRecentPrice: company => dispatch(fetchMostRecentPrice(company)),
+	getHistoricalPrices: (company, time) => dispatch(fetchHistoricalPrices(company, time)),
 });
 
 export default connect(

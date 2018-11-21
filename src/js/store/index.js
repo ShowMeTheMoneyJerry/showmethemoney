@@ -3,11 +3,11 @@ import { wrapStore } from 'react-chrome-redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-//import articles from './articles';
+import articlesReducer from './articles';
 import pricesReducer from './prices';
 
 const reducer = combineReducers({
-  //articles,
+  articles: articlesReducer,
   prices: pricesReducer,
 });
 
@@ -21,5 +21,5 @@ wrapStore(store, {
 });
 
 export default store;
-// export * from './articles';
+export * from './articles';
 export * from './prices';

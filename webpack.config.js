@@ -56,6 +56,7 @@ var options = {
 			}
 		]
 	},
+
 	resolve: {
 		alias: alias,
 		extensions: fileExtensions.map((extension) => '.' + extension).concat([ '.jsx', '.js', '.css' ])

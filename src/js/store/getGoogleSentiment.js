@@ -7,8 +7,8 @@ const client = new language.LanguageServiceClient({
   keyFilename: '4b1a139bea39.json',
 });
 
-const getGoogleSentiment = async (text) => {
-  let newSentiment;
+export const getGoogleSentiment = async (text) => {
+  //let newSentiment;
   //let text = 'sad sad sad sad ';
   const document = {
     content: text,
@@ -35,6 +35,6 @@ const getGoogleSentiment = async (text) => {
 // };
 //getGoogleSentiment(document)
 
-module.exports = {
-  getGoogleSentiment
-}
+// module.exports = {
+//   getGoogleSentiment
+// }
