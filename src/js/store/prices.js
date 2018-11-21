@@ -27,6 +27,17 @@ export const fetchMostRecentPrice = company => async dispatch => {
   }
 };
 
+export const fetchHistoricalPrices = (company, time) => async dispatch => {
+  try {
+    let url = `https://api.iextrading.com/1.0/stock/${company}/chart/${time}`;
+    const { data } = await axios.get(url);
+    console.log('this is the shape of historical prices: ', data);
+    dispatch(setHistoricalPrices(data));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // Reducer
 const initialState = {
   recentPrice: 0,
@@ -40,13 +51,12 @@ const pricesReducer = (state = initialState, action) => {
         recentPrice: action.price,
         historicalPrices: state.historicalPrices,
       };
-    // case SET_HISTORICAL_PRICES:
-    //   return {
-    //     recentPrice: state.recentPrice,
-    //     historicalPrices: action.prices,
-    //   };
-    // case SET_MOST_RECENT_PRICE:
-    //   return [...state, action.price];
+    case SET_HISTORICAL_PRICES:
+      return {
+        recentPrice: state.recentPrice,
+        historicalPrices: action.prices,
+      };
+
     default:
       return state;
   }
