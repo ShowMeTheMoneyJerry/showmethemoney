@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import Button from '@material-ui/core/Button';
 // import {getSession} from '..store/aliases'
 // import aliases from '../store/aliases';
-import {setCurrentPrice, fetchCurrentStockPrice} from '../store/prices';
+import {setCurrentPrice, fetchMostRecentPrice} from '../store/prices';
 
 class PopupHome extends React.Component {
 	constructor(props) {
@@ -38,7 +38,7 @@ const mapState = (state) => ({
 
 const mapDispatch = (dispatch) => ({
 	setPrice: (num) => dispatch(setCurrentPrice(num)),
-	getPrice: (company) => dispatch(fetchCurrentStockPrice(company))
+	getPrice: (company) => dispatch(fetchMostRecentPrice(company))
 });
 
 export default connect(mapState, mapDispatch)(hot(module)(PopupHome));

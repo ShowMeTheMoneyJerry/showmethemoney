@@ -1,7 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-
 const yahooNewsFetch = async (company, time) => {
+
   // fetch articles from yahoo ---------------------------
   let url = `http://finance.yahoo.com/rss/headline?s=${company}`;
   const fetchedArticles = await axios.get(url);
@@ -9,6 +9,7 @@ const yahooNewsFetch = async (company, time) => {
   // initialize data storage -----------------------------
   const items = [];
   const dates = [];
+  const titles = [];
   // -----------------------------------------------------
   // parse XML from rss feed -----------------------------
   const $ = await cheerio.load(fetchedArticles.data);
@@ -19,6 +20,11 @@ const yahooNewsFetch = async (company, time) => {
     items[i] = $(this).text();
     dates.push(
       $('pubDate')
+        .eq(i)
+        .text()
+    );
+    titles.push(
+      $('title')
         .eq(i)
         .text()
     );
@@ -34,7 +40,7 @@ const yahooNewsFetch = async (company, time) => {
       parsedArticles.push({
         link: item.slice(httpIndex, rssIndex + 3),
         date: dates[index],
-
+        title: titles[index]
       });
     }
     //-----------------------------------------------
@@ -55,7 +61,9 @@ const yahooNewsFetch = async (company, time) => {
   return parsedArticles;
 };
 
-//  let sampleCompany = 'aapl';
-//  yahooNewsFetch(sampleCompany, (new Date() - 6000000));
+  let sampleCompany = 'aapl';
+ yahooNewsFetch(sampleCompany, (new Date() - 600000000));
 
-module.exports = yahooNewsFetch;
+module.exports = {
+  yahooNewsFetch
+}

@@ -5,6 +5,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Store, applyMiddleware} from 'react-chrome-redux';
 import {Provider} from 'react-redux';
+import store from './store';
 
 import {createLogger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
@@ -15,10 +16,7 @@ const proxyStore = new Store({
 });
 
 // Apply middleware to proxy store
-const storeWithMiddleware = applyMiddleware(
-	proxyStore,
-	composeWithDevTools(thunkMiddleware, createLogger({collapsed: true}))
-);
+const storeWithMiddleware = applyMiddleware(proxyStore, thunkMiddleware, createLogger({collapsed: true}));
 
 // You can now dispatch a function from the proxy store
 storeWithMiddleware.dispatch((dispatch, getState) => {
@@ -31,13 +29,22 @@ const anchor = document.createElement('nav');
 anchor.id = 'app';
 window.document.body.prepend(anchor);
 
-proxyStore.ready().then(() => {
-	// The store implements the same interface as Redux's store
-	// so you can use tools like `react-redux` no problem!
-	render(
-		<Provider store={proxyStore}>
-			<ContentHome />
-		</Provider>,
-		window.document.getElementById('app')
-	);
-});
+//THIS IS WHAT RENDER NEEDS TO BE!!!
+
+// proxyStore.ready().then(() => {
+// 	// The store implements the same interface as Redux's store
+// 	// so you can use tools like `react-redux` no problem!
+// 	render(
+// 		<Provider store={proxyStore}>
+// 			<ContentHome />
+// 		</Provider>,
+// 		window.document.getElementById('app')
+// 	);
+// });
+
+render(
+	<Provider store={store}>
+		<ContentHome />
+	</Provider>,
+	window.document.getElementById('app')
+);
