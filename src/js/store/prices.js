@@ -1,10 +1,16 @@
-const axios = require('axios');
+import axios from 'axios';
 
-//Action Types
+// Action Types
 export const SET_MOST_RECENT_PRICE = 'SET_MOST_RECENT_PRICE';
 export const SET_HISTORICAL_PRICES = 'SET_HISTORICAL_PRICES';
+export const SET_CURRENT_PRICE = 'SET_CURRENT_PRICE';
 
 // Action Creators
+export const setCurrentPrice = price => ({
+  type: 'SET_CURRENT_PRICE',
+  price,
+});
+
 export const setMostRecentPrice = price => ({
   type: 'SET_MOST_RECENT_PRICE',
   price,

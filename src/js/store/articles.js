@@ -1,5 +1,39 @@
-const axios = require('axios');
-//const getArticleData = require('../../../getArticleData')
+import axios from 'axios';
+import getArticleData from '../../../getArticleData';
+
+//Mark's Code
+
+// // Action Types
+// const SET_RECENT_ARTICLES = 'SET_RECENT_ARTICLES';
+// // Action Creators
+// export const setRecentArticles = (articles) => ({
+// 	type: SET_RECENT_ARTICLES,
+// 	articles
+// });
+// // Thunk Creator
+// export const fetchRecentArticles = (company, time) => async (dispatch) => {
+// 	try {
+// 		let newArticles = await getArticleData(company, time);
+
+// 		dispatch(setRecentArticles(newArticles));
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// };
+
+// // Reducer
+
+// const initialState = {
+// 	articles: [ 'Potato Stocks Rise' ]
+// };
+
+// const articlesReducer = (state = initialState, action) => {
+// 	switch (action.type) {
+// 		case SET_RECENT_ARTICLES:
+// 			return {articles: []};
+// 		default:
+// 			return state;
+// 	}
 
 //Action Types
 export const SET_MOST_RECENT_ARTICLE = 'SET_MOST_RECENT_ARTICLE';
@@ -17,10 +51,10 @@ export const setHistoricalArticles = articles => ({
 });
 
 //Thunk Creator
-export const fetchMostRecentArticles = (company, time) => async dispatch => {
+export const fetchMostRecentPrice = (company, time) => async dispatch => {
   try {
     const { data } = await getArticleData(company, time);
-    console.log('this is the shape of article is right: ', data);
+    console.log('this is the shape of price is right: ', data);
 
     dispatch(setMostRecentArticle(data));
   } catch (error) {
@@ -32,7 +66,7 @@ export const fetchHistoricalArticles = (company, time) => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/chart/${time}`;
     const { data } = await axios.get(url);
-    console.log('this is the shape of historical articles: ', data);
+    console.log('this is the shape of historical prices: ', data);
 
     dispatch(setHistoricalArticles(data));
   } catch (error) {
