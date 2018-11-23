@@ -1,6 +1,5 @@
-import React, { Component, forwardRef } from 'react';
+import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
-import { connect } from 'react-redux';
 
 const plugins = [
   {
@@ -13,6 +12,8 @@ const plugins = [
 
 export default class Chart extends Component {
   render() {
+    const { historicalPricesArr } = this.props;
+
     // 7 days x-axis including today
     let weekAxis = [];
     for (let i = 6; i >= 0; i--) {
@@ -21,11 +22,11 @@ export default class Chart extends Component {
     }
 
     // for price data-----------------------------------
-    const dateFilteredPrices = this.props.historicalPricesArr.filter(elem =>
+    const dateFilteredPrices = historicalPricesArr.filter(elem =>
       weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
 
-    // --> pricesData format will be {x: "Fri, 16 Nov 2018", y: 153.25}
+    // ---- pricesData format looks like this --> {x: "Fri, 16 Nov 2018", y: 153.25}
     let pricesData = [];
     for (let i = 0; i < dateFilteredPrices.length; i++) {
       let obj = {};
@@ -36,16 +37,11 @@ export default class Chart extends Component {
       obj.y = dateFilteredPrices[i].close;
       if (i === 0 && formattedDate !== weekAxis[0]) {
         let addingObj = {};
-        let addingPrice = 0;
-        while (!addingPrice) {
-          let i = 1;
-          const dateModifiedPricesArr = this.props.historicalPricesArr.map(
-            elem => new Date(elem.date).toUTCString().slice(0, 16)
-          );
-          addingPrice = this.props.historicalPricesArr[
-            dateModifiedPricesArr.indexOf(formattedDate) - 1
-          ];
-        }
+        const dateModifiedPricesArr = historicalPricesArr.map(elem =>
+          new Date(elem.date).toUTCString().slice(0, 16)
+        );
+        const addingPrice =
+          historicalPricesArr[dateModifiedPricesArr.indexOf(formattedDate) - 1];
         addingObj.x = weekAxis[0];
         addingObj.y = addingPrice.close;
         pricesData.push(addingObj);
@@ -59,7 +55,7 @@ export default class Chart extends Component {
       elem => weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
 
-    // --> sentimentData format will be {x: "Fri, 16 Nov 2018", y: 10}
+    // ---- sentimentData format looks like this --> {x: "Fri, 16 Nov 2018", y: 10}
     const sentimentData = [];
     for (let i = 0; i < dateFilteredSentiment.length; i++) {
       let obj = {};
@@ -72,11 +68,7 @@ export default class Chart extends Component {
     }
     sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
 
-    console.log('pricesData', pricesData);
-    console.log('sentimentData', sentimentData);
-
-    // issue: average sentiment로 바꿔야 함. 안그럼 두점이 이어져서 찍힘. daily average sentiment를
-    // 어디에서 계산해서 어떻게 저장할 것인지 정해야 함.
+    // issue: average sentiment로 바꿔야 함. daily average sentiment를 어디에서 계산해서 어떻게 저장할 것인지 정해야 함.
 
     const data = {
       labels: weekAxis,
@@ -164,11 +156,7 @@ export default class Chart extends Component {
     };
     return (
       <div>
-        {/* <canvas > */}
-        {/* <h2>Mixed data Example</h2> */}
         <Line data={data} options={options} plugins={plugins} />
-
-        {/* </canvas> */}
       </div>
     );
   }
