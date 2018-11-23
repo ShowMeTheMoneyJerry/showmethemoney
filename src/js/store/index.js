@@ -1,22 +1,26 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux';
-import {wrapStore} from 'react-chrome-redux';
+import {wrapStore, alias} from 'react-chrome-redux';
 import {createLogger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import {composeWithDevTools} from 'redux-devtools-extension';
-import articles from './articles';
-import prices from './prices';
+import {aliases} from './aliases';
+import articlesReducer from './articles';
+import pricesReducer from './prices';
 
 const reducer = combineReducers({
-	articles,
-	prices
+	articles: articlesReducer,
+	prices: pricesReducer
 });
 
-const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({collapsed: true})));
-const store = createStore(reducer, middleware);
+// const middleware = composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger({collapsed: true})));
+
+// const store = createStore(reducer, middleware);
+const store = createStore(reducer, applyMiddleware(alias(aliases), thunkMiddleware, createLogger({collapsed: true})));
 
 wrapStore(store, {
 	portName: 'MakesCents'
 });
+
 export default store;
 export * from './articles';
 export * from './prices';
