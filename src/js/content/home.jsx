@@ -16,7 +16,7 @@ class ContentHome extends Component {
 		//
 		// }, 1000);
 		// console.log('prrrroooops', this.props)
-		this.props.getHistoricalPrices('aapl', '5d');
+		// this.props.getHistoricalPrices('aapl', '5d');
 	}
 	render() {
 		if (this.props.prices.recentPrice === undefined) {
@@ -27,7 +27,7 @@ class ContentHome extends Component {
 			return el.close;
 		});
 
-		const historicalArticles = this.props.articles.historicalArticles;
+		// const historicalArticles = this.props.articles.historicalArticles;
 
 		return (
 			<div>
@@ -43,7 +43,7 @@ class ContentHome extends Component {
 }
 
 const mapState = (state) => ({
-	articles: state.articles,
+	// articles: state.articles,
 	prices: state.prices
 });
 
