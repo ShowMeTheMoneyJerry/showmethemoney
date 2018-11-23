@@ -1,7 +1,6 @@
 import React, { Component, forwardRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { connect } from 'react-redux';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 const plugins = [
   {
@@ -35,9 +34,25 @@ export default class Chart extends Component {
         .slice(0, 16);
       obj.x = formattedDate;
       obj.y = dateFilteredPrices[i].close;
+      if (i === 0 && formattedDate !== weekAxis[0]) {
+        let addingObj = {};
+        let addingPrice = 0;
+        while (!addingPrice) {
+          let i = 1;
+          const dateModifiedPricesArr = this.props.historicalPricesArr.map(
+            elem => new Date(elem.date).toUTCString().slice(0, 16)
+          );
+          addingPrice = this.props.historicalPricesArr[
+            dateModifiedPricesArr.indexOf(formattedDate) - 1
+          ];
+        }
+        addingObj.x = weekAxis[0];
+        addingObj.y = addingPrice.close;
+        pricesData.push(addingObj);
+      }
       pricesData.push(obj);
     }
-    pricesData.unshift({ labels: weekAxis });
+    pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
 
     // for sentiment data-----------------------------------
     const dateFilteredSentiment = this.props.historicalArticlesArr.filter(
@@ -56,12 +71,11 @@ export default class Chart extends Component {
       sentimentData.push(obj);
     }
     sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
+
     console.log('pricesData', pricesData);
     console.log('sentimentData', sentimentData);
 
-    // issue 1: 특정 x-axis에 해당하는 값이 없는 경우에 어떻게 할 것인지
-    // 그게 x-axis 중간이면 그냥 두 점을 알아서 이어줌.
-    // issue 2: average sentiment로 바꿔야 함. 안그럼 두점이 이어져서 찍힘. daily average sentiment를
+    // issue: average sentiment로 바꿔야 함. 안그럼 두점이 이어져서 찍힘. daily average sentiment를
     // 어디에서 계산해서 어떻게 저장할 것인지 정해야 함.
 
     const data = {

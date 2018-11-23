@@ -20,7 +20,7 @@ export const fetchMostRecentPrice = company => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/price`;
     const { data } = await axios.get(url);
-    console.log('this is the shape of price is right: ', data);
+    // console.log('this is the shape of price is right: ', data);
     dispatch(setMostRecentPrice(data));
   } catch (error) {
     console.error(error);
@@ -31,7 +31,7 @@ export const fetchHistoricalPrices = (company, time) => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/chart/${time}`;
     const { data } = await axios.get(url);
-    console.log('this is the shape of historical prices: ', data);
+    // console.log('this is the shape of historical prices: ', data);
     dispatch(setHistoricalPrices(data));
   } catch (error) {
     console.error(error);
