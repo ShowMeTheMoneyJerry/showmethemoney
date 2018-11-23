@@ -21,7 +21,7 @@ const storeWithMiddleware = applyMiddleware(proxyStore, thunkMiddleware, createL
 // You can now dispatch a function from the proxy store
 storeWithMiddleware.dispatch((dispatch, getState) => {
 	// Regular dispatches will still be routed to the background
-	dispatch({type: 'start-async-action'});
+	// dispatch({type: 'start-async-action'});
 });
 
 // This anchor is what we use to inject code into the browser

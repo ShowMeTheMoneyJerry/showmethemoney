@@ -10,7 +10,7 @@ var excludeEntriesToHotReload = options.notHotReload || [];
 for (var entryName in config.entry) {
 	if (excludeEntriesToHotReload.indexOf(entryName) === -1) {
 		config.entry[entryName] = [
-			'webpack-dev-server/client?https://localhost:' + env.PORT,
+			'webpack-dev-server/client?http://localhost:' + env.PORT,
 			'webpack/hot/dev-server'
 		].concat(config.entry[entryName]);
 	}

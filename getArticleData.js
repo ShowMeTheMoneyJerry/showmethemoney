@@ -55,5 +55,7 @@ const getArticleData = async (company, time) => {
 // module.exports = {
 //   getArticleData,
 // }
-getArticleData('aapl', 600000);
+
+// getArticleData('aapl', 600000);
+
 //export default getArticleData;

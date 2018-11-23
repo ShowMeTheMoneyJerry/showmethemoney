@@ -52,8 +52,8 @@ const yahooNewsFetch = async (company, time) => {
 	return parsedArticles;
 };
 
-let sampleCompany = 'aapl';
-yahooNewsFetch(sampleCompany, new Date() - 600000000);
+// let sampleCompany = 'aapl';
+// yahooNewsFetch(sampleCompany, new Date() - 600000000);
 
 module.exports = {
 	yahooNewsFetch

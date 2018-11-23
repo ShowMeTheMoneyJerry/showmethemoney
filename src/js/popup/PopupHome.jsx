@@ -106,11 +106,11 @@ class PopupHome extends React.Component {
 					<div className={classes.root}>
 						<h1 style={{fontFamily: 'Impact', fontSize: 33, color: 'white'}}>MakesCent$</h1>
 						<List className={classes.list}>
-							{companyArray.map((company) => {
+							{companyArray.map((company, idx) => {
 								return (
-									<ListItem key={company.name} className={classes.listItem}>
+									<ListItem key={this.name} className={classes.listItem}>
 										<Button className={classes.listItemNameButton} color="inherit">
-											{company.name}
+											{this.props.companies.allCompanies[idx]}
 										</Button>
 										<Button className={classes.listItemDataButton}>
 											<div>{`Price: ${company.price}`}</div>
@@ -148,7 +148,7 @@ class PopupHome extends React.Component {
 				return (
 					<div>
 						<h1>prices: {this.props.prices.recentPrice}</h1>
-						<h1>count: {this.props.articles.historicalArticles[0].title}</h1>
+						{/* <h1>count: {this.props.articles.historicalArticles[0].title}</h1> */}
 						<Button color="primary">Button 1</Button>
 						<Button color="primary">Button 2</Button>
 					</div>
@@ -158,8 +158,9 @@ class PopupHome extends React.Component {
 }
 
 const mapState = (state) => ({
-	articles: state.articles,
-	prices: state.prices
+	// articles: state.articles,
+	prices: state.prices,
+	companies: state.companies
 });
 
 const mapDispatch = (dispatch) => ({
