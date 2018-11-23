@@ -2,26 +2,30 @@ console.log('Hey Ryan! content.js is working!');
 
 import ContentHome from './content/home.jsx';
 import React from 'react';
-import {render} from 'react-dom';
-import {Store, applyMiddleware} from 'react-chrome-redux';
-import {Provider} from 'react-redux';
+import { render } from 'react-dom';
+import { Store, applyMiddleware } from 'react-chrome-redux';
+import { Provider } from 'react-redux';
 import store from './store';
 
-import {createLogger} from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const proxyStore = new Store({
-	portName: 'MakesCents'
+  portName: 'MakesCents',
 });
 
 // Apply middleware to proxy store
-const storeWithMiddleware = applyMiddleware(proxyStore, thunkMiddleware, createLogger({collapsed: true}));
+const storeWithMiddleware = applyMiddleware(
+  proxyStore,
+  thunkMiddleware,
+  createLogger({ collapsed: true })
+);
 
 // You can now dispatch a function from the proxy store
 storeWithMiddleware.dispatch((dispatch, getState) => {
-	// Regular dispatches will still be routed to the background
-	// dispatch({type: 'start-async-action'});
+  // Regular dispatches will still be routed to the background
+  // dispatch({type: 'start-async-action'});
 });
 
 // This anchor is what we use to inject code into the browser
@@ -43,8 +47,9 @@ window.document.body.prepend(anchor);
 // });
 
 render(
-	<Provider store={store}>
-		<ContentHome />
-	</Provider>,
-	window.document.getElementById('app')
+  <Provider store={store}>
+    <div />
+    {/* <ContentHome /> */}
+  </Provider>,
+  window.document.getElementById('app')
 );
