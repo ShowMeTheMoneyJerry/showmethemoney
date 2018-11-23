@@ -13,6 +13,7 @@ const plugins = [
 export default class Chart extends Component {
   render() {
     const { historicalPricesArr } = this.props;
+    const { recentPrice } = this.props;
 
     // 7 days x-axis including today
     let weekAxis = [];
@@ -48,8 +49,11 @@ export default class Chart extends Component {
       }
       pricesData.push(obj);
     }
-    pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
+    // adding most recent price at the end of the graph
+    const today = new Date().toUTCString().slice(0, 16);
+    pricesData.push({ x: today, y: recentPrice });
 
+    pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
     // for sentiment data-----------------------------------
     const dateFilteredSentiment = this.props.historicalArticlesArr.filter(
       elem => weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))

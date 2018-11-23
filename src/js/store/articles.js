@@ -17,10 +17,10 @@ export const setHistoricalArticles = articles => ({
 });
 
 //Thunk Creator
-export const fetchMostRecentPrice = (company, time) => async dispatch => {
+export const fetchMostRecentArticles = (company, time) => async dispatch => {
   try {
     const { data } = await getArticleData(company, time);
-    console.log('this is the shape of price is right: ', data);
+    console.log('this is the shape of article is right: ', data);
 
     dispatch(setMostRecentArticle(data));
   } catch (error) {
@@ -32,7 +32,7 @@ export const fetchHistoricalArticles = (company, time) => async dispatch => {
   try {
     let url = `https://api.iextrading.com/1.0/stock/${company}/chart/${time}`;
     const { data } = await axios.get(url);
-    console.log('this is the shape of historical prices: ', data);
+    console.log('this is the shape of historical articles: ', data);
 
     dispatch(setHistoricalArticles(data));
   } catch (error) {

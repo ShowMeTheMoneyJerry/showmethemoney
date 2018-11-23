@@ -16,6 +16,7 @@ class GreetingComponent extends Component {
     // }, 1000);
     // console.log('prrrroooops', this.props)
     this.props.getHistoricalPrices('aapl', '5d');
+    this.props.getMostRecentPrice('aapl');
   }
   render() {
     if (this.props.prices.recentPrice === undefined) {
@@ -23,7 +24,9 @@ class GreetingComponent extends Component {
     }
 
     const historicalPrices = this.props.prices.historicalPrices;
+    const recentPrice = this.props.prices.recentPrice;
     const historicalArticles = this.props.articles.historicalArticles;
+    console.log('mostRecentPrice', recentPrice);
     return (
       <div>
         {/* <h1>This is articles test: {this.props.count}</h1> */}
@@ -32,6 +35,7 @@ class GreetingComponent extends Component {
         <Chart
           historicalPricesArr={historicalPrices}
           historicalArticlesArr={historicalArticles}
+          recentPrice={recentPrice}
         />
         {/* <img src="https://i.imgur.com/7CXBltb.jpg" /> */}
         {/* <Button color="primary">Hello World!</Button> */}
