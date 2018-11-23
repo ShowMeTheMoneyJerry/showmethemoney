@@ -25,8 +25,8 @@ const getArticleData = async (company, time) => {
 			//send text to google for sentiment---------------------------v
 			//********************************
 			//format sentimentResult from decimal (-1 to 1) to number (-100 to 100)
-			let sentimentResult = await getGoogleSentiment(unit);
-			let sentimentScore = Math.floor(sentimentResult.score * 100);
+			// let sentimentResult = await getGoogleSentiment(unit); //FIX NEEDED
+			let sentimentScore = 1; //<------- Put this variable here ----->Math.floor(sentimentResult.score * 100);
 			//********************************
 
 			// console.log('returned from googlesent Func----', sentimentResult);

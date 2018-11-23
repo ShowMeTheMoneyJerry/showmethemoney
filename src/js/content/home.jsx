@@ -32,11 +32,11 @@ class ContentHome extends Component {
 		return (
 			<div>
 				{/* <h1>This is articles test: {this.props.count}</h1> */}
-				<h1>This is prices: {historicalClosePrices}</h1>
+				{/* <h1>This is prices: {historicalClosePrices}</h1>
 				<p>this is a p tag</p>
 				<Chart historicalClosePrices={historicalClosePrices} historicalArticlesArr={historicalArticles} />
 				<img src="https://i.imgur.com/7CXBltb.jpg" />
-				<Button color="primary">Hello World!</Button>
+				<Button color="primary">Hello World!</Button> */}
 			</div>
 		);
 	}
