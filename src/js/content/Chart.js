@@ -14,48 +14,55 @@ const plugins = [
 
 export default class Chart extends Component {
   render() {
+    // 7 days x-axis including today
     let weekAxis = [];
     for (let i = 6; i >= 0; i--) {
       let date = new Date(new Date() - 86400000 * i);
       weekAxis.push(date.toUTCString().slice(0, 16));
     }
 
-    const historicalClosePrices = this.props.historicalPricesArr.map(
-      el => el.close
+    // for price data-----------------------------------
+    const dateFilteredPrices = this.props.historicalPricesArr.filter(elem =>
+      weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
 
-    const historicalPricesDate = this.props.historicalPricesArr.map(el =>
-      new Date(el.date).toUTCString().slice(0, 16)
-    );
-
-    const pricesData = [];
-    for (let i = 0; i < historicalClosePrices.length; i++) {
+    // --> pricesData format will be {x: "Fri, 16 Nov 2018", y: 153.25}
+    let pricesData = [];
+    for (let i = 0; i < dateFilteredPrices.length; i++) {
       let obj = {};
-      obj.x = historicalPricesDate[i];
-      obj.y = historicalClosePrices[i];
+      const formattedDate = new Date(dateFilteredPrices[i].date)
+        .toUTCString()
+        .slice(0, 16);
+      obj.x = formattedDate;
+      obj.y = dateFilteredPrices[i].close;
       pricesData.push(obj);
     }
-    pricesData.shift({ labels: weekAxis });
-    console.log('pricesData-->', pricesData);
+    pricesData.unshift({ labels: weekAxis });
 
-    const historicalSentimentArr = this.props.historicalArticlesArr.map(
-      elem => elem.sentiment
+    // for sentiment data-----------------------------------
+    const dateFilteredSentiment = this.props.historicalArticlesArr.filter(
+      elem => weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
 
-    const historicalSentimentDate = this.props.historicalArticlesArr.map(elem =>
-      new Date(elem.date).toUTCString().slice(0, 16)
-    );
-
+    // --> sentimentData format will be {x: "Fri, 16 Nov 2018", y: 10}
     const sentimentData = [];
-    for (let i = 0; i < historicalSentimentDate.length; i++) {
+    for (let i = 0; i < dateFilteredSentiment.length; i++) {
       let obj = {};
-      obj.x = historicalSentimentDate[i];
-      obj.y = historicalSentimentArr[i];
+      const formattedDate = new Date(dateFilteredSentiment[i].date)
+        .toUTCString()
+        .slice(0, 16);
+      obj.x = formattedDate;
+      obj.y = dateFilteredSentiment[i].sentiment;
       sentimentData.push(obj);
     }
-    sentimentData.shift({ labels: weekAxis });
-    console.log('sentimentData-->', sentimentData);
-    // {x: "10:00", y: 127}
+    sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
+    console.log('pricesData', pricesData);
+    console.log('sentimentData', sentimentData);
+
+    // issue 1: 특정 x-axis에 해당하는 값이 없는 경우에 어떻게 할 것인지
+    // 그게 x-axis 중간이면 그냥 두 점을 알아서 이어줌.
+    // issue 2: average sentiment로 바꿔야 함. 안그럼 두점이 이어져서 찍힘. daily average sentiment를
+    // 어디에서 계산해서 어떻게 저장할 것인지 정해야 함.
 
     const data = {
       labels: weekAxis,
@@ -72,7 +79,6 @@ export default class Chart extends Component {
           pointHoverBackgroundColor: '#EC932F',
           pointHoverBorderColor: '#EC932F',
           yAxisID: 'y-axis-1',
-          xAxisId: 'x-axis',
         },
         {
           type: 'line',
@@ -84,7 +90,6 @@ export default class Chart extends Component {
           hoverBackgroundColor: '#71B37C',
           hoverBorderColor: '#71B37C',
           yAxisID: 'y-axis-2',
-          xAxisId: 'x-axis',
         },
       ],
     };
@@ -102,7 +107,6 @@ export default class Chart extends Component {
       scales: {
         xAxes: [
           {
-            id: 'x-axis',
             display: true,
             gridLines: {
               display: false,
