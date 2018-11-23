@@ -22,23 +22,19 @@ class GreetingComponent extends Component {
       return <div>Oops, ehat broke it</div>;
     }
 
-    const historicalClosePrices = this.props.prices.historicalPrices.map(el => {
-      return el.close;
-    });
-
+    const historicalPrices = this.props.prices.historicalPrices;
     const historicalArticles = this.props.articles.historicalArticles;
-
     return (
       <div>
         {/* <h1>This is articles test: {this.props.count}</h1> */}
-        <h1>This is prices: {historicalClosePrices}</h1>
-        <p>this is a p tag</p>
+        {/* <h1>This is prices: {historicalPrices}</h1> */}
+        {/* <p>this is a p tag</p> */}
         <Chart
-          historicalClosePrices={historicalClosePrices}
+          historicalPricesArr={historicalPrices}
           historicalArticlesArr={historicalArticles}
         />
-        <img src="https://i.imgur.com/7CXBltb.jpg" />
-        <Button color="primary">Hello World!</Button>
+        {/* <img src="https://i.imgur.com/7CXBltb.jpg" /> */}
+        {/* <Button color="primary">Hello World!</Button> */}
       </div>
     );
   }
