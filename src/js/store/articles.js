@@ -1,5 +1,4 @@
 import axios from 'axios';
-import getArticleData from '../../../getArticleData';
 
 //Action Types
 export const SET_MOST_RECENT_ARTICLE = 'SET_MOST_RECENT_ARTICLE';
@@ -17,20 +16,10 @@ export const setHistoricalArticles = (articles) => ({
 });
 
 //Thunk Creator
-export const fetchMostRecentPrice = (company, time) => async (dispatch) => {
-	try {
-		const {data} = await getArticleData(company, time);
-		console.log('this is the shape of price is right: ', data);
-
-		dispatch(setMostRecentArticle(data));
-	} catch (error) {
-		console.error(error);
-	}
-};
 
 export const fetchHistoricalArticles = (company, time) => async (dispatch) => {
 	try {
-		let url = `https://mysterious-woodland-76479.herokuapp.com/${company}/${time}`;
+		let url = `https://makescents.herokuapp.com/${company}/${time}`;
 		const {data} = await axios.get(url);
 
 		console.log('data', data);

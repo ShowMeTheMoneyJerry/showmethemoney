@@ -1,9 +1,4 @@
-import '../img/icon-128.png';
-import '../img/icon-34.png';
-
-// const {getGoogleSentiment} = require('../../getGoogleSentiment');
-
-console.log('hello to esta from the background.js');
+console.log('Lurking from the back, it is background.js!');
 
 import {wrapStore} from 'react-chrome-redux';
 import store from './store';

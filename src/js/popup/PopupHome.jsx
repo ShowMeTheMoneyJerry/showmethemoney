@@ -11,16 +11,16 @@ import green from '@material-ui/core/colors/green';
 import {Switch} from '@material-ui/core';
 import ArticleList from './components/ArticleList';
 import Chart from './components/Chart';
-import {fetchMostRecentPrice, fetchHistoricalPrices, fetchCurrentStockPrice, fetchHistoricalArticles} from '../store';
-// import {getSession} from '..store/aliases'
-// import aliases from '../store/aliases';
+import {fetchMostRecentPrice, fetchHistoricalPrices, fetchHistoricalArticles} from '../store';
+import {storeThunker} from '../popup';
 
 const styles = (theme) => ({
 	root: {
 		display: 'flex',
-		backgroundColor: '#333',
+		// backgroundColor: '#333',
 		flexDirection: 'column',
-
+		width: '800px',
+		height: '500px',
 		alignItems: 'center'
 	},
 	list: {
@@ -71,14 +71,14 @@ class PopupHome extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			view: 'articleList'
+			view: 'chart'
 		};
 	}
 
 	componentDidMount() {
 		this.props.getMostRecentPrice('aapl');
 		this.props.getHistoricalPrices('aapl', '5d');
-		this.props.getHistoricalArticles('appl', 600000);
+		this.props.getHistoricalArticles('aapl', 600000);
 	}
 	render() {
 		const historicalPrices = this.props.prices.historicalPrices;
@@ -112,7 +112,7 @@ class PopupHome extends React.Component {
 						<List className={classes.list}>
 							{companyArray.map((company, idx) => {
 								return (
-									<ListItem key={this.name} className={classes.listItem}>
+									<ListItem key={idx} className={classes.listItem}>
 										<Button className={classes.listItemNameButton} color="inherit">
 											{this.props.companies.allCompanies[idx]}
 										</Button>
@@ -138,8 +138,9 @@ class PopupHome extends React.Component {
 			case 'chart':
 				// layout
 				return (
-					<div>
+					<div className={classes.root}>
 						<Chart
+							className={classes.root}
 							historicalPricesArr={historicalPrices}
 							historicalArticlesArr={historicalArticles}
 							recentPrice={recentPrice}
@@ -148,7 +149,7 @@ class PopupHome extends React.Component {
 				);
 			case 'articleList':
 				return (
-					<div>
+					<div className={classes.root}>
 						<ArticleList articles={this.props.articles.historicalArticles} />
 					</div>
 				);
@@ -156,7 +157,6 @@ class PopupHome extends React.Component {
 				return (
 					<div>
 						<h1>prices: {this.props.prices.recentPrice}</h1>
-						{/* <h1>count: {this.props.articles.historicalArticles[0].title}</h1> */}
 						<Button color="primary">Button 1</Button>
 						<Button color="primary">Button 2</Button>
 					</div>
@@ -172,9 +172,9 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = (dispatch) => ({
-	getMostRecentPrice: (company) => dispatch(fetchMostRecentPrice(company)),
-	getHistoricalPrices: (company, time) => dispatch(fetchHistoricalPrices(company, time)),
-	getHistoricalArticles: (company, time) => dispatch(fetchHistoricalArticles(company, time))
+	getMostRecentPrice: (company) => storeThunker.dispatch(fetchMostRecentPrice(company)),
+	getHistoricalPrices: (company, time) => storeThunker.dispatch(fetchHistoricalPrices(company, time)),
+	getHistoricalArticles: (company, time) => storeThunker.dispatch(fetchHistoricalArticles(company, time))
 });
 
 export default withStyles(styles)(connect(mapState, mapDispatch)(hot(module)(PopupHome)));
