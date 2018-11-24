@@ -1,4 +1,3 @@
-//Ben's solution to the promise situation. Wrap entire file in async func
 //const fetchNews = require('./redditAPItest');
 const {yahooNewsFetch} = require('./yahooNewsFetch');
 // const { getGoogleSentiment } = require('./getGoogleSentiment');
@@ -12,7 +11,6 @@ const getArticleData = async (company, time) => {
 
 	//---------------------------------------------------------------
 	//start fetching articles-------------------------
-	console.log('hi');
 	let newArticles = await yahooNewsFetch(company, time);
 	//let newArticles = await yahooNewsFetch('aapl', 60000000);
 
@@ -20,7 +18,9 @@ const getArticleData = async (company, time) => {
 		//formate article into 1,000 chars---------------------------
 		for (let i = 0; i < newArticles.length; i++) {
 			console.log(newArticles[i]);
-			let unit = newArticles[i].content.substring(0, 999);
+			if (newArticles[i].content) {
+				let unit = newArticles[i].content.substring(0, 999);
+			}
 			//---------------------------------------------------------------
 			//send text to google for sentiment---------------------------v
 			//********************************
@@ -52,10 +52,10 @@ const getArticleData = async (company, time) => {
 };
 //getArticleData(company)
 
-// module.exports = {
-//   getArticleData,
-// }
+module.exports = {
+	getArticleData
+};
 
-// getArticleData('aapl', 600000);
+getArticleData('aapl', 600000);
 
 //export default getArticleData;
