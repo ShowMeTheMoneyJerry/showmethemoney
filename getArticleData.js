@@ -52,10 +52,10 @@ const getArticleData = async (company, time) => {
 };
 //getArticleData(company)
 
-module.exports = {
-	getArticleData
-};
+// module.exports = {
+// 	getArticleData
+// };
 
-getArticleData('aapl', 600000);
+// getArticleData('aapl', 600000);
 
 //export default getArticleData;
