@@ -11,22 +11,20 @@ import green from "@material-ui/core/colors/green";
 import { Switch } from "@material-ui/core";
 import ArticleList from "./components/ArticleList";
 import Chart from "./components/Chart";
-import Settings from "./components/Settings";
 import {
   fetchMostRecentPrice,
   fetchHistoricalPrices,
-  fetchCurrentStockPrice,
   fetchHistoricalArticles
 } from "../store";
-// import {getSession} from '..store/aliases'
-// import aliases from '../store/aliases';
+import { storeThunker } from "../popup";
 
 const styles = theme => ({
   root: {
     display: "flex",
     backgroundColor: "#333",
     flexDirection: "column",
-
+    width: "800px",
+    height: "500px",
     alignItems: "center"
   },
   list: {
@@ -221,11 +219,12 @@ const mapState = state => ({
 });
 
 const mapDispatch = dispatch => ({
-  getMostRecentPrice: company => dispatch(fetchMostRecentPrice(company)),
+  getMostRecentPrice: company =>
+    storeThunker.dispatch(fetchMostRecentPrice(company)),
   getHistoricalPrices: (company, time) =>
-    dispatch(fetchHistoricalPrices(company, time)),
+    storeThunker.dispatch(fetchHistoricalPrices(company, time)),
   getHistoricalArticles: (company, time) =>
-    dispatch(fetchHistoricalArticles(company, time))
+    storeThunker.dispatch(fetchHistoricalArticles(company, time))
 });
 
 export default withStyles(styles)(
