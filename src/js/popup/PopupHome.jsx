@@ -128,7 +128,7 @@ class PopupHome extends React.Component {
             <List className={classes.list}>
               {companyArray.map((company, idx) => {
                 return (
-                  <ListItem key={this.name} className={classes.listItem}>
+                  <ListItem key={company.name} className={classes.listItem}>
                     <Button
                       className={classes.listItemNameButton}
                       color="inherit"
