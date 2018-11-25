@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Line } from "react-chartjs-2";
-import Button from "@material-ui/core/Button";
+import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
+import Button from '@material-ui/core/Button';
 
 const plugins = [
   {
     afterDraw: (chartInstance, easing) => {
       const ctx = chartInstance.chart.ctx;
       //ctx.fillText("This text drawn by a plugin", 100, 100);
-    }
-  }
+    },
+  },
 ];
 
 export default class Chart extends Component {
@@ -37,6 +37,8 @@ export default class Chart extends Component {
         .slice(0, 16);
       obj.x = formattedDate;
       obj.y = dateFilteredPrices[i].close;
+
+      // adding the previous day's price to the beginning of the graph
       if (i === 0 && formattedDate !== weekAxis[0]) {
         let addingObj = {};
         const dateModifiedPricesArr = historicalPricesArr.map(elem =>
@@ -48,11 +50,29 @@ export default class Chart extends Component {
         addingObj.y = addingPrice.close;
         pricesData.push(addingObj);
       }
+
       pricesData.push(obj);
+
+      // adding most recent price to the end of the graph
+      const today = new Date().toUTCString().slice(0, 16);
+      if (i === dateFilteredPrices.length - 1) {
+        if (!recentPrice) {
+          const valueToAdd = pricesData[pricesData.length - 1].y;
+          pricesData.push({ x: today, y: valueToAdd });
+        } else {
+          pricesData.push({ x: today, y: recentPrice });
+        }
+      }
     }
+
     // adding most recent price at the end of the graph
-    const today = new Date().toUTCString().slice(0, 16);
-    pricesData.push({ x: today, y: recentPrice });
+    // if (pricesData && recentPrice) {
+    //   console.log('this one is weird.... ');
+    //   const valueToAdd = pricesData[pricesData.length - 1].y;
+    //   pricesData.push({ x: today, y: valueToAdd });
+    // } else {
+    //   pricesData.push({ x: today, y: recentPrice });
+    // }
 
     pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
     // for sentiment data-----------------------------------
@@ -79,89 +99,95 @@ export default class Chart extends Component {
       labels: weekAxis,
       datasets: [
         {
-          label: "Stock Price",
-          type: "line",
+          label: 'Stock Price',
+          type: 'line',
           data: pricesData,
           fill: false,
-          borderColor: "#EC932F",
-          backgroundColor: "#EC932F",
-          pointBorderColor: "#EC932F",
-          pointBackgroundColor: "#EC932F",
-          pointHoverBackgroundColor: "#EC932F",
-          pointHoverBorderColor: "#EC932F",
-          yAxisID: "y-axis-1"
+          borderColor: '#EC932F',
+          backgroundColor: '#EC932F',
+          pointBorderColor: '#EC932F',
+          pointBackgroundColor: '#EC932F',
+          pointHoverBackgroundColor: '#EC932F',
+          pointHoverBorderColor: '#EC932F',
+          yAxisID: 'y-axis-1',
         },
         {
-          type: "line",
-          label: "Sentiment Rating",
+          type: 'line',
+          label: 'Sentiment Rating',
           data: sentimentData,
           fill: false,
-          backgroundColor: "#71B37C",
-          borderColor: "#71B37C",
-          hoverBackgroundColor: "#71B37C",
-          hoverBorderColor: "#71B37C",
-          yAxisID: "y-axis-2"
-        }
-      ]
+          backgroundColor: '#71B37C',
+          borderColor: '#71B37C',
+          hoverBackgroundColor: '#71B37C',
+          hoverBorderColor: '#71B37C',
+          yAxisID: 'y-axis-2',
+        },
+      ],
     };
 
     const options = {
       responsive: true,
       tooltips: {
-        mode: "label"
+        mode: 'label',
       },
       elements: {
         line: {
-          fill: false
-        }
+          fill: false,
+        },
       },
       scales: {
         xAxes: [
           {
             display: true,
             gridLines: {
-              display: false
-            }
+              display: false,
+            },
             // labels: {
             //   show: true
             // }
-          }
+          },
         ],
         yAxes: [
           {
-            type: "linear",
+            type: 'linear',
             display: true,
-            position: "left",
-            id: "y-axis-1",
+            position: 'left',
+            id: 'y-axis-1',
             gridLines: {
-              display: false
-            }
+              display: false,
+            },
             // labels: {
             //   show: true
             // }
           },
           {
-            type: "linear",
+            type: 'linear',
             display: true,
-            position: "right",
-            id: "y-axis-2",
+            position: 'right',
+            id: 'y-axis-2',
             gridLines: {
-              display: false
+              display: false,
             },
             ticks: {
               max: 100,
-              min: -100
-            }
+              min: -100,
+            },
             // labels: {
             //   show: true
             // }
-          }
-        ]
-      }
+          },
+        ],
+      },
     };
     return (
       <div>
-        <Line data={data} options={options} plugins={plugins} />
+        <Line
+          data={data}
+          width={500}
+          height={300}
+          options={options}
+          plugins={plugins}
+        />
         <Button
           onClick={() => {
             this.props.onBackButtonClick();
