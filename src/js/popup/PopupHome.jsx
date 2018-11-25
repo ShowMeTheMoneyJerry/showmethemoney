@@ -11,6 +11,7 @@ import green from "@material-ui/core/colors/green";
 import { Switch } from "@material-ui/core";
 import ArticleList from "./components/ArticleList";
 import Chart from "./components/Chart";
+import Settings from "./components/Settings";
 import {
   fetchMostRecentPrice,
   fetchHistoricalPrices,
@@ -21,10 +22,10 @@ import { storeThunker } from "../popup";
 const styles = theme => ({
   root: {
     display: "flex",
-    backgroundColor: "#333",
+    //backgroundColor: "#333",
     flexDirection: "column",
-    width: "800px",
-    height: "500px",
+    width: "600px",
+    height: "400px",
     alignItems: "center"
   },
   list: {
@@ -121,7 +122,7 @@ class PopupHome extends React.Component {
       case "home":
         return (
           <div className={classes.root}>
-            <h1 style={{ fontFamily: "Impact", fontSize: 33, color: "white" }}>
+            <h1 style={{ fontFamily: "Impact", fontSize: 33, color: "#333" }}>
               MakesCent$
             </h1>
             <List className={classes.list}>
@@ -171,7 +172,7 @@ class PopupHome extends React.Component {
         );
       case "settings":
         return (
-          <div>
+          <div className={classes.root}>
             <Settings
               name={this.state.selectedCompany.name}
               onBackButtonClick={this.goHome}
@@ -181,7 +182,7 @@ class PopupHome extends React.Component {
       case "chart":
         // layout
         return (
-          <div>
+          <div className={classes.root}>
             <Chart
               historicalPricesArr={historicalPrices}
               historicalArticlesArr={historicalArticles}
@@ -192,7 +193,7 @@ class PopupHome extends React.Component {
         );
       case "articleList":
         return (
-          <div>
+          <div className={classes.root}>
             <ArticleList
               articles={this.props.articles.historicalArticles}
               onBackButtonClick={this.goHome}
