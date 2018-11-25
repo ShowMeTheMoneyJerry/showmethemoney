@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
+import Button from '@material-ui/core/Button';
 
 const plugins = [
   {
@@ -49,6 +50,7 @@ export default class Chart extends Component {
         addingObj.y = addingPrice.close;
         pricesData.push(addingObj);
       }
+
       pricesData.push(obj);
 
       // adding most recent price to the end of the graph
@@ -181,11 +183,18 @@ export default class Chart extends Component {
       <div>
         <Line
           data={data}
-          height={500}
-          width={700}
+          width={500}
+          height={300}
           options={options}
           plugins={plugins}
         />
+        <Button
+          onClick={() => {
+            this.props.onBackButtonClick();
+          }}
+        >
+          Home
+        </Button>
       </div>
     );
   }
