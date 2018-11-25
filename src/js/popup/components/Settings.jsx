@@ -115,7 +115,7 @@ class Settings extends React.Component {
                 onChange={this.handleHighSentimentChange}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">#</InputAdornment>
+                    <InputAdornment position="start">%</InputAdornment>
                   )
                 }}
               />
@@ -130,7 +130,7 @@ class Settings extends React.Component {
                 onChange={this.handleLowSentimentChange}
                 InputProps={{
                   startAdornment: (
-                    <InputAdornment position="start">#</InputAdornment>
+                    <InputAdornment position="start">%</InputAdornment>
                   )
                 }}
               />
