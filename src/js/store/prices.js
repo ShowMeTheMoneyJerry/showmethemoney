@@ -21,7 +21,7 @@ export const fetchMostRecentPrice = (company) => async (dispatch) => {
 	try {
 		let url = `https://api.iextrading.com/1.0/stock/${company}/price`;
 		const {data} = await axios.get(url);
-		console.log('most recent price: ', data);
+		console.log('most recent price prices.js: ', data);
 		dispatch(setMostRecentPrice(data));
 	} catch (error) {
 		console.error(error);
