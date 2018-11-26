@@ -10,6 +10,10 @@ export const REMOVE_COMPANY = 'REMOVE_COMPANY';
 export const SET_MOST_RECENT_PRICE = 'SET_MOST_RECENT_PRICE';
 export const SET_HISTORICAL_PRICES = 'SET_HISTORICAL_PRICES';
 
+//Articles
+export const SET_MOST_RECENT_ARTICLE = 'SET_MOST_RECENT_ARTICLE';
+export const SET_HISTORICAL_ARTICLES = 'SET_HISTORICAL_ARTICLES';
+
 // Action Creators
 export const removeCompany = (comp) => ({
 	type: 'REMOVE_COMPANY',
@@ -29,6 +33,13 @@ export const setMostRecentPrice = (result) => ({
 
 export const setHistoricalPrices = (result) => ({
 	type: SET_HISTORICAL_PRICES,
+	result
+});
+
+//articles
+
+export const setHistoricalArticles = (result) => ({
+	type: 'SET_HISTORICAL_ARTICLES',
 	result
 });
 
@@ -57,37 +68,60 @@ export const fetchHistoricalPrices = (companyName, time) => async (dispatch) => 
 	}
 };
 
+export const fetchHistoricalArticles = (companyName, time) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/${companyName}/${time}`;
+		const {data} = await axios.get(url);
+
+		console.log('data', data);
+		const result = {companyName, data};
+		dispatch(setHistoricalArticles(result));
+	} catch (error) {
+		console.error(error);
+	}
+};
+
 // Reducer
 const initialState = {
 	aapl: {
 		recentPrice: 0,
 		historicalPrices: [],
 		view: 'thumbs-up',
-		sentiment: 1
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
 	},
 	googl: {
 		recentPrice: '$ 80.00',
 		historicalPrices: [],
 		view: 'thumbs-down',
-		sentiment: 1
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
 	},
 	tsla: {
 		recentPrice: '$ 80.00',
 		historicalPrices: [],
 		view: 'thumbs-down',
-		sentiment: 1
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
 	},
 	ebay: {
 		recentPrice: '$ 80.00',
 		historicalPrices: [],
 		view: 'thumbs-down',
-		sentiment: 1
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
 	},
 	msft: {
 		recentPrice: '$ 24.56',
 		historicalPrices: [],
 		view: 'thumbs-middle',
-		sentiment: 1
+		sentiment: 1,
+		dailyArticles: [],
+		historicalArticles: []
 	}
 };
 
@@ -109,6 +143,9 @@ const companies = (state = initialState, action) => {
 			return state;
 		case SET_HISTORICAL_PRICES:
 			state[`${action.result.companyName}`].historicalPrices = action.result.data;
+			return state;
+		case SET_HISTORICAL_ARTICLES:
+			state[`${action.result.companyName}`].historicalArticles = action.result.data;
 			return state;
 		default:
 			return state;

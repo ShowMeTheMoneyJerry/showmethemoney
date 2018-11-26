@@ -1,11 +1,6 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import {connect} from 'react-redux';
-import ArticleList from './components/ArticleList';
-import Chart from './components/Chart';
-import Settings from './components/Settings';
-import {fetchMostRecentPrice, fetchHistoricalPrices, fetchHistoricalArticles} from '../store';
-import {storeThunker} from '../popup';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,8 +9,14 @@ import {withStyles} from '@material-ui/core/styles';
 import InfoIcon from '@material-ui/icons/Info';
 import green from '@material-ui/core/colors/green';
 import {Switch} from '@material-ui/core';
+import ArticleList from './components/ArticleList';
+import Chart from './components/Chart';
+import Settings from './components/Settings';
 import Divider from '@material-ui/core/Divider';
+import {fetchMostRecentPrice, fetchHistoricalPrices, fetchHistoricalArticles} from '../store';
+import {storeThunker} from '../popup';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 //--------------
 // for snackbar
@@ -36,40 +37,24 @@ const action = (
 const styles = (theme) => ({
 	root: {
 		display: 'flex',
-		//backgroundColor: "#333",
+		backgroundColor: '#575757',
 		flexDirection: 'column',
-		width: '100%',
-		maxWidth: '550px',
-		backgroundColor: theme.palette.background.paper,
-		height: '400px',
+		width: '600px',
+		height: '100%',
 		alignItems: 'center'
-	},
-	header: {
-		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-		maxWidth: '550px',
-		alignItems: 'center',
-		height: '30%',
-		margin: theme.spacing.unit,
-		color: 'red',
-		alignContent: 'center'
 	},
 	list: {
 		display: 'flex',
-		flexDirection: 'column',
-		width: '100%',
-		maxWidth: '550px',
-		backgroundColor: theme.palette.background.paper
+		flexDirection: 'column'
 	},
 	listItemNameButton: {
 		margin: theme.spacing.unit,
 		display: 'flex',
 		flex: 1,
-		color: theme.palette.getContrastText('#BDBDBD'),
-		backgroundColor: '#BDBDBD',
+		color: theme.palette.getContrastText('#c7d1d1'),
+		backgroundColor: '#c7d1d1',
 		'&:hover': {
-			backgroundColor: '#BDBDBD'
+			backgroundColor: '#c7d1d1'
 		}
 	},
 	listItemDataButton: {
@@ -79,15 +64,15 @@ const styles = (theme) => ({
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 		textTransform: 'none',
-		color: theme.palette.getContrastText('#AED581'),
+		color: theme.palette.getContrastText('#AED590'),
 
-		backgroundColor: '#AED581',
+		backgroundColor: '#d4f2ec',
 		'&:hover': {
-			backgroundColor: '#AED581'
+			backgroundColor: '#d4f2ec'
 		}
 	},
 	listItemInfoButton: {
-		color: 'white'
+		color: '#daf1e9'
 	},
 	listItem: {
 		display: 'flex',
@@ -100,14 +85,9 @@ const styles = (theme) => ({
 		borderColor: 'white',
 		borderStyle: 'solid'
 	},
-	snackbar: {
+	sentimentContainer: {
 		display: 'flex',
-		width: '100%',
-		height: '30%',
-		margin: theme.spacing.unit,
-		alignItems: 'center',
-		color: 'red',
-		alignContent: 'center'
+		alignItems: 'center'
 	}
 });
 
@@ -122,10 +102,9 @@ class PopupHome extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getMostRecentPrice('aapl');
 		Object.keys(this.props.companies).map((company) => this.props.getMostRecentPrice(company));
-		// this.props.getHistoricalPrices('aapl', '5d');
-		// this.props.getHistoricalArticles('aapl', 600000);
+		this.props.getHistoricalPrices('aapl', '5d');
+		this.props.getHistoricalArticles('aapl', 86400000);
 	}
 
 	goHome() {
@@ -140,27 +119,9 @@ class PopupHome extends React.Component {
 		}
 		const historicalPrices = this.props.companies.aapl.historicalPrices;
 		const recentPrice = this.props.companies.aapl.recentPrice;
-		const historicalArticles = this.props.articles.historicalArticles;
+		const historicalArticles = this.props.companies.aapl.historicalArticles;
 
 		console.log(this.props.companies, ' --> companies');
-
-		const companyArray = [
-			{
-				name: 'AAPL',
-				price: `$ ${recentPrice}`,
-				view: 'thumbs-up'
-			},
-			{
-				name: 'SPCX',
-				price: '$ 24.56',
-				view: 'thumbs-down'
-			},
-			{
-				name: 'TSLA',
-				price: '$ 80.00',
-				view: 'thumbs-middle'
-			}
-		];
 
 		const {classes} = this.props;
 
@@ -178,6 +139,29 @@ class PopupHome extends React.Component {
 							obj[Object.keys(obj)[0]] //returns 'someVal' */}
 
 							{Object.keys(this.props.companies).map((company, idx) => {
+								let thumb = null;
+								if (company.sentiment > 0) {
+									thumb = (
+										<img
+											src={require('../../img/thumbsUp.png')}
+											style={{width: 30, height: 30, marginLeft: 10}}
+										/>
+									);
+								} else if (company.sentiment < -1) {
+									thumb = (
+										<img
+											src={require('../../img/thumbsDown.png')}
+											style={{width: 30, height: 30, marginLeft: 10}}
+										/>
+									);
+								} else {
+									thumb = (
+										<img
+											src={require('../../img/thumbsNeutral.png')}
+											style={{width: 30, height: 30, marginLeft: 10}}
+										/>
+									);
+								}
 								return (
 									<div key={company}>
 										<ListItem key={company} className={classes.listItem}>
@@ -207,10 +191,11 @@ class PopupHome extends React.Component {
 														Object.keys(this.props.companies)[idx]
 													].recentPrice}`}
 												</div>
-												<div>
-													{`view: ${this.props.companies[
+												<div className={classes.sentimentContainer}>
+													{/* {`view: ${this.props.companies[
 														Object.keys(this.props.companies)[idx]
-													].view}`}
+                          ].view}`} */}
+													view: {thumb}
 												</div>
 											</Button>
 											<Button
@@ -240,6 +225,9 @@ class PopupHome extends React.Component {
 				);
 			case 'chart':
 				// layout
+				if (!this.props.companies.aapl.historicalPrices) {
+					return <CircularProgress className={classes.progress} color="secondary" />;
+				}
 				return (
 					<div className={classes.root}>
 						<Chart
@@ -251,10 +239,13 @@ class PopupHome extends React.Component {
 					</div>
 				);
 			case 'articleList':
+				if (!this.props.companies.aapl.historicalArticles) {
+					return <CircularProgress className={classes.progress} color="secondary" />;
+				}
 				return (
 					<div className={classes.root}>
 						<ArticleList
-							articles={this.props.articles.historicalArticles}
+							articles={this.props.companies.aapl.historicalArticles}
 							onBackButtonClick={this.goHome}
 						/>
 					</div>
