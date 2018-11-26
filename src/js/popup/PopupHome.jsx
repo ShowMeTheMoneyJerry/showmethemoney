@@ -12,6 +12,7 @@ import { Switch } from "@material-ui/core";
 import ArticleList from "./components/ArticleList";
 import Chart from "./components/Chart";
 import Settings from "./components/Settings";
+
 import {
   fetchMostRecentPrice,
   fetchHistoricalPrices,
@@ -22,7 +23,7 @@ import { storeThunker } from "../popup";
 const styles = theme => ({
   root: {
     display: "flex",
-    //backgroundColor: "#333",
+    backgroundColor: "#575757",
     flexDirection: "column",
     width: "600px",
     height: "400px",
@@ -36,10 +37,10 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     display: "flex",
     flex: 1,
-    color: theme.palette.getContrastText("#BDBDBD"),
-    backgroundColor: "#BDBDBD",
+    color: theme.palette.getContrastText("#c7d1d1"),
+    backgroundColor: "#c7d1d1",
     "&:hover": {
-      backgroundColor: "#BDBDBD"
+      backgroundColor: "#c7d1d1"
     }
   },
   listItemDataButton: {
@@ -49,15 +50,15 @@ const styles = theme => ({
     justifyContent: "space-between",
     flexDirection: "row",
     textTransform: "none",
-    color: theme.palette.getContrastText("#AED581"),
+    color: theme.palette.getContrastText("#AED590"),
 
-    backgroundColor: "#AED581",
+    backgroundColor: "#d4f2ec",
     "&:hover": {
-      backgroundColor: "#AED581"
+      backgroundColor: "#d4f2ec"
     }
   },
   listItemInfoButton: {
-    color: "white"
+    color: "#daf1e9"
   },
   listItem: {
     display: "flex",
@@ -69,6 +70,10 @@ const styles = theme => ({
     borderRightWidth: 0,
     borderColor: "white",
     borderStyle: "solid"
+  },
+  sentimentContainer: {
+    display: "flex",
+    alignItems: "center"
   }
 });
 
@@ -85,7 +90,7 @@ class PopupHome extends React.Component {
   componentDidMount() {
     this.props.getMostRecentPrice("aapl");
     this.props.getHistoricalPrices("aapl", "5d");
-    this.props.getHistoricalArticles("appl", 600000);
+    this.props.getHistoricalArticles("aapl", 6000000);
   }
 
   goHome() {
@@ -103,19 +108,25 @@ class PopupHome extends React.Component {
       {
         name: "AAPL",
         price: `$ ${this.props.prices.recentPrice}`,
-        view: "thumbs-up"
+        view: "thumbs-up",
+        companySentiment: 100
       },
       {
         name: "SPCX",
         price: "$ 24.56",
-        view: "thumbs-down"
+        view: "thumbs-down",
+        companySentiment: -20
       },
       {
         name: "TSLA",
         price: "$ 80.00",
-        view: "thumbs-middle"
+        view: "thumbs-middle",
+        companySentiment: 24
       }
     ];
+
+    const lowSentiment = 0;
+    const highSentiment = 50;
     const { classes } = this.props;
 
     switch (this.state.view) {
@@ -127,6 +138,29 @@ class PopupHome extends React.Component {
             </h1>
             <List className={classes.list}>
               {companyArray.map((company, idx) => {
+                let thumb = null;
+                if (company.companySentiment > highSentiment) {
+                  thumb = (
+                    <img
+                      src={require("../../img/thumbsUp.png")}
+                      style={{ width: 30, height: 30, marginLeft: 10 }}
+                    />
+                  );
+                } else if (company.companySentiment < lowSentiment) {
+                  thumb = (
+                    <img
+                      src={require("../../img/thumbsDown.png")}
+                      style={{ width: 30, height: 30, marginLeft: 10 }}
+                    />
+                  );
+                } else {
+                  thumb = (
+                    <img
+                      src={require("../../img/thumbsNeutral.png")}
+                      style={{ width: 30, height: 30, marginLeft: 10 }}
+                    />
+                  );
+                }
                 return (
                   <ListItem key={company.name} className={classes.listItem}>
                     <Button
@@ -151,7 +185,10 @@ class PopupHome extends React.Component {
                       }}
                     >
                       <div>{`Price: ${company.price}`}</div>
-                      <div>{`view: ${company.view}`}</div>
+                      <div className={classes.sentimentContainer}>
+                        view:
+                        {thumb}
+                      </div>
                     </Button>
                     <Button
                       className={classes.listItemInfoButton}
