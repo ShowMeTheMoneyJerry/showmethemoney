@@ -5,18 +5,18 @@ import {fetchMostRecentPrice, fetchHistoricalPrices} from '../store';
 
 class ContentHome extends Component {
 	componentDidMount() {
-		this.props.getHistoricalPrices('aapl', '5d');
-		this.props.getMostRecentPrice('aapl');
+		// this.props.getHistoricalPrices('aapl', '5d');
+		// this.props.getMostRecentPrice('aapl');
 	}
 	render() {
-		if (this.props.prices.recentPrice === undefined) {
-			return <div>Oops, what broke it</div>;
-		}
+		// if (this.props.prices.recentPrice === undefined) {
+		// 	return <div>Oops, what broke it</div>;
+		// }
 
-		const historicalPrices = this.props.prices.historicalPrices;
-		const recentPrice = this.props.prices.recentPrice;
-		const historicalArticles = this.props.articles.historicalArticles;
-		console.log('mostRecentPrice', recentPrice);
+		// const historicalPrices = this.props.prices.historicalPrices;
+		// const recentPrice = this.props.prices.recentPrice;
+		// const historicalArticles = this.props.articles.historicalArticles;
+		// console.log('mostRecentPrice', recentPrice);
 		return (
 			<div>
 				{/* <h1>This is articles test: {this.props.count}</h1> */}
@@ -34,8 +34,8 @@ class ContentHome extends Component {
 }
 
 const mapState = (state) => ({
-	articles: state.articles,
-	prices: state.prices
+	// articles: state.articles,
+	// prices: state.prices
 });
 
 const mapDispatch = (dispatch) => ({
