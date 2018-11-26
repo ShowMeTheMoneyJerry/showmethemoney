@@ -37,7 +37,7 @@ const action = (
 const styles = (theme) => ({
 	root: {
 		display: 'flex',
-		backgroundColor: '#575757',
+		backgroundColor: '#faf9f9',
 		flexDirection: 'column',
 		width: '600px',
 		height: '100%',
@@ -52,9 +52,10 @@ const styles = (theme) => ({
 		display: 'flex',
 		flex: 1,
 		color: theme.palette.getContrastText('#c7d1d1'),
-		backgroundColor: '#c7d1d1',
+		backgroundColor: '#a3dcac',
 		'&:hover': {
-			backgroundColor: '#c7d1d1'
+			backgroundColor: '#128fa6',
+			color: '#FFFFFF'
 		}
 	},
 	listItemDataButton: {
@@ -68,11 +69,16 @@ const styles = (theme) => ({
 
 		backgroundColor: '#d4f2ec',
 		'&:hover': {
-			backgroundColor: '#d4f2ec'
+			backgroundColor: '#128fa6',
+			color: '#FFFFFF'
 		}
 	},
 	listItemInfoButton: {
-		color: '#daf1e9'
+		color: '#daf1e9',
+		'&:hover': {
+			backgroundColor: '#128fa6',
+			color: '#FFFFFF'
+		}
 	},
 	listItem: {
 		display: 'flex',
@@ -129,7 +135,7 @@ class PopupHome extends React.Component {
 			case 'home':
 				return (
 					<div className={classes.root}>
-						<SnackbarContent action={action} className={classes.header} />
+						{/* <SnackbarContent action={action} className={classes.header} /> */}
 						<h1 className={classes.header} style={{fontFamily: 'Impact', fontSize: 33, color: '#333'}}>
 							makes¢ents
 						</h1>
@@ -167,7 +173,7 @@ class PopupHome extends React.Component {
 										<ListItem key={company} className={classes.listItem}>
 											<Button
 												className={classes.listItemNameButton}
-												color="inherit"
+												color="primary"
 												onClick={() => {
 													this.setState({
 														selectedCompany: company,
