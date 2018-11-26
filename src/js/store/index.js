@@ -4,12 +4,12 @@ import {createLogger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import {aliases} from './aliases';
 import articlesReducer from './articles';
-import pricesReducer from './prices';
+// import pricesReducer from './prices';
 import companiesReducer from './companies';
 
 const reducer = combineReducers({
 	articles: articlesReducer,
-	prices: pricesReducer,
+	// prices: pricesReducer,
 	companies: companiesReducer
 });
 
@@ -24,5 +24,5 @@ wrapStore(store, {
 
 export default store;
 export * from './articles';
-export * from './prices';
+// export * from './prices';
 export * from './companies';

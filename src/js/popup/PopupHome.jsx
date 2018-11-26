@@ -12,7 +12,7 @@ import { Switch } from "@material-ui/core";
 import ArticleList from "./components/ArticleList";
 import Chart from "./components/Chart";
 import Settings from "./components/Settings";
-
+import Divider from "@material-ui/core/Divider";
 import {
   fetchMostRecentPrice,
   fetchHistoricalPrices,
@@ -26,7 +26,7 @@ const styles = theme => ({
     backgroundColor: "#575757",
     flexDirection: "column",
     width: "600px",
-    height: "400px",
+    height: "100%",
     alignItems: "center"
   },
   list: {
@@ -81,52 +81,55 @@ class PopupHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCompany: {},
+      selectedCompany: "",
       view: "home"
     };
     this.goHome = this.goHome.bind(this);
   }
 
   componentDidMount() {
-    this.props.getMostRecentPrice("aapl");
-    this.props.getHistoricalPrices("aapl", "5d");
-    this.props.getHistoricalArticles("aapl", 6000000);
+    // this.props.getMostRecentPrice("aapl");
+    Object.keys(this.props.companies).map(company =>
+      this.props.getMostRecentPrice(company)
+    );
+    // this.props.getHistoricalPrices('aapl', '5d');
+    // this.props.getHistoricalArticles('aapl', 600000);
   }
 
   goHome() {
     this.setState({
-      selectedCompany: {},
+      selectedCompany: "",
       view: "home"
     });
   }
   render() {
-    const historicalPrices = this.props.prices.historicalPrices;
-    const recentPrice = this.props.prices.recentPrice;
+    if (!this.props.companies.aapl.recentPrice) {
+      return <div />;
+    }
+    const historicalPrices = this.props.companies.aapl.historicalPrices;
+    const recentPrice = this.props.companies.aapl.recentPrice;
     const historicalArticles = this.props.articles.historicalArticles;
+
+    console.log(this.props.companies, " --> companies");
 
     const companyArray = [
       {
         name: "AAPL",
-        price: `$ ${this.props.prices.recentPrice}`,
-        view: "thumbs-up",
-        companySentiment: 100
+        price: `$ ${recentPrice}`,
+        view: "thumbs-up"
       },
       {
         name: "SPCX",
         price: "$ 24.56",
-        view: "thumbs-down",
-        companySentiment: -20
+        view: "thumbs-down"
       },
       {
         name: "TSLA",
         price: "$ 80.00",
-        view: "thumbs-middle",
-        companySentiment: 24
+        view: "thumbs-middle"
       }
     ];
 
-    const lowSentiment = 0;
-    const highSentiment = 50;
     const { classes } = this.props;
 
     switch (this.state.view) {
@@ -134,19 +137,23 @@ class PopupHome extends React.Component {
         return (
           <div className={classes.root}>
             <h1 style={{ fontFamily: "Impact", fontSize: 33, color: "#333" }}>
-              MakesCent$
+              makes¢ents
             </h1>
             <List className={classes.list}>
-              {companyArray.map((company, idx) => {
+              {/* clever way to map through an Object:
+							 let obj = { first: 'someVal' };
+							obj[Object.keys(obj)[0]] //returns 'someVal' */}
+
+              {Object.keys(this.props.companies).map((company, idx) => {
                 let thumb = null;
-                if (company.companySentiment > highSentiment) {
+                if (company.sentiment > 0) {
                   thumb = (
                     <img
                       src={require("../../img/thumbsUp.png")}
                       style={{ width: 30, height: 30, marginLeft: 10 }}
                     />
                   );
-                } else if (company.companySentiment < lowSentiment) {
+                } else if (company.sentiment < -1) {
                   thumb = (
                     <img
                       src={require("../../img/thumbsDown.png")}
@@ -162,46 +169,57 @@ class PopupHome extends React.Component {
                   );
                 }
                 return (
-                  <ListItem key={company.name} className={classes.listItem}>
-                    <Button
-                      className={classes.listItemNameButton}
-                      color="inherit"
-                      onClick={() => {
-                        this.setState({
-                          selectedCompany: company,
-                          view: "articleList"
-                        });
-                      }}
-                    >
-                      {this.props.companies.allCompanies[idx]}
-                    </Button>
-                    <Button
-                      className={classes.listItemDataButton}
-                      onClick={() => {
-                        this.setState({
-                          selectedCompany: company,
-                          view: "chart"
-                        });
-                      }}
-                    >
-                      <div>{`Price: ${company.price}`}</div>
-                      <div className={classes.sentimentContainer}>
-                        view:
-                        {thumb}
-                      </div>
-                    </Button>
-                    <Button
-                      className={classes.listItemInfoButton}
-                      onClick={() => {
-                        this.setState({
-                          selectedCompany: company,
-                          view: "settings"
-                        });
-                      }}
-                    >
-                      <InfoIcon />
-                    </Button>
-                  </ListItem>
+                  <div key={company}>
+                    <ListItem key={company} className={classes.listItem}>
+                      <Button
+                        className={classes.listItemNameButton}
+                        color="inherit"
+                        onClick={() => {
+                          this.setState({
+                            selectedCompany: company,
+                            view: "articleList"
+                          });
+                        }}
+                      >
+                        {Object.keys(this.props.companies)[idx]}
+                      </Button>
+                      <Button
+                        className={classes.listItemDataButton}
+                        onClick={() => {
+                          this.setState({
+                            selectedCompany: company,
+                            view: "chart"
+                          });
+                        }}
+                      >
+                        <div>
+                          {`Price: ${
+                            this.props.companies[
+                              Object.keys(this.props.companies)[idx]
+                            ].recentPrice
+                          }`}
+                        </div>
+                        <div className={classes.sentimentContainer}>
+                          {/* {`view: ${this.props.companies[
+														Object.keys(this.props.companies)[idx]
+                          ].view}`} */}
+                          view: {thumb}
+                        </div>
+                      </Button>
+                      <Button
+                        className={classes.listItemInfoButton}
+                        onClick={() => {
+                          this.setState({
+                            selectedCompany: company,
+                            view: "settings"
+                          });
+                        }}
+                      >
+                        <InfoIcon />
+                      </Button>
+                    </ListItem>
+                    <Divider />
+                  </div>
                 );
               })}
             </List>
@@ -240,7 +258,7 @@ class PopupHome extends React.Component {
       default:
         return (
           <div>
-            <h1>prices: {this.props.prices.recentPrice}</h1>
+            {/* <h1>prices: {this.props.companies.aapl.recentPrice}</h1> */}
             {/* <h1>count: {this.props.articles.historicalArticles[0].title}</h1> */}
             <Button color="primary">Button 1</Button>
             <Button color="primary">Button 2</Button>
@@ -252,7 +270,7 @@ class PopupHome extends React.Component {
 
 const mapState = state => ({
   articles: state.articles,
-  prices: state.prices,
+  // prices: state.prices,
   companies: state.companies
 });
 
