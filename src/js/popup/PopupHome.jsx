@@ -1,6 +1,11 @@
 import React from 'react';
 import {hot} from 'react-hot-loader';
 import {connect} from 'react-redux';
+import ArticleList from './components/ArticleList';
+import Chart from './components/Chart';
+import Settings from './components/Settings';
+import {fetchMostRecentPrice, fetchHistoricalPrices, fetchHistoricalArticles} from '../store';
+import {storeThunker} from '../popup';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,11 +15,23 @@ import InfoIcon from '@material-ui/icons/Info';
 import green from '@material-ui/core/colors/green';
 import {Switch} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
-import ArticleList from './components/ArticleList';
-import Chart from './components/Chart';
-import Settings from './components/Settings';
-import {fetchMostRecentPrice, fetchHistoricalPrices, fetchHistoricalArticles} from '../store';
-import {storeThunker} from '../popup';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+
+//--------------
+// for snackbar
+const action = (
+	<div>
+		<h1>makes¢ents</h1>
+		<Button color="secondary" size="small">
+			lorem ipsum dolorem
+		</Button>
+		<Button color="secondary" size="small">
+			<InfoIcon />
+		</Button>
+	</div>
+);
+
+//--------------
 
 const styles = (theme) => ({
 	root: {
@@ -26,6 +43,17 @@ const styles = (theme) => ({
 		backgroundColor: theme.palette.background.paper,
 		height: '400px',
 		alignItems: 'center'
+	},
+	header: {
+		display: 'flex',
+		flexDirection: 'column',
+		width: '100%',
+		maxWidth: '550px',
+		alignItems: 'center',
+		height: '30%',
+		margin: theme.spacing.unit,
+		color: 'red',
+		alignContent: 'center'
 	},
 	list: {
 		display: 'flex',
@@ -71,6 +99,15 @@ const styles = (theme) => ({
 		borderRightWidth: 0,
 		borderColor: 'white',
 		borderStyle: 'solid'
+	},
+	snackbar: {
+		display: 'flex',
+		width: '100%',
+		height: '30%',
+		margin: theme.spacing.unit,
+		alignItems: 'center',
+		color: 'red',
+		alignContent: 'center'
 	}
 });
 
@@ -131,7 +168,10 @@ class PopupHome extends React.Component {
 			case 'home':
 				return (
 					<div className={classes.root}>
-						<h1 style={{fontFamily: 'Impact', fontSize: 33, color: '#333'}}>makes¢ents</h1>
+						<SnackbarContent action={action} className={classes.header} />
+						<h1 className={classes.header} style={{fontFamily: 'Impact', fontSize: 33, color: '#333'}}>
+							makes¢ents
+						</h1>
 						<List className={classes.list}>
 							{/* clever way to map through an Object:
 							 let obj = { first: 'someVal' };
