@@ -103,13 +103,12 @@ export const fetchHistoricalPrices = (companyName, time) => async dispatch => {
   }
 };
 
-export const fetchHistoricalArticles = (
-  companyName,
-  time
-) => async dispatch => {
+export const fetchHistoricalArticles = companyName => async dispatch => {
   try {
-    let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
+    // let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
+    let url = `https://makescents.herokuapp.com/api/article/${companyName}/86400000`;
     const { data } = await axios.get(url);
+    console.log('dataaaaa', data);
     const result = { companyName, data };
     dispatch(setHistoricalArticles(result));
   } catch (error) {
@@ -122,6 +121,7 @@ export const fetchSetting = companyName => async dispatch => {
     let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
     const { data } = await axios.get(url);
     const result = { companyName, data };
+    console.log('get setting data', result);
     dispatch(getSetting(result));
   } catch (error) {
     console.error(error);

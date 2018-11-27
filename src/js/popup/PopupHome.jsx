@@ -114,14 +114,14 @@ class PopupHome extends React.Component {
     this.goHome = this.goHome.bind(this);
   }
 
-  componentDidMount() {
-    Object.keys(this.props.companies).map(company =>
+  async componentDidMount() {
+    await Object.keys(this.props.companies).map(company =>
       this.props.getMostRecentPrice(company)
     );
-    this.props.getHistoricalPrices('aapl', '5d');
-    this.props.getHistoricalArticles('aapl');
-    this.props.getSetting('aapl');
-    this.props.getSentiment('aapl');
+    await this.props.getHistoricalPrices('aapl', '5d');
+    await this.props.getHistoricalArticles('aapl');
+    await this.props.getSetting('aapl');
+    await this.props.getSentiment('aapl');
   }
 
   goHome() {
