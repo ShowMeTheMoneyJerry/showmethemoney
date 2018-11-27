@@ -114,6 +114,10 @@ const styles = theme => ({
     alignItems: 'center',
   },
 });
+const CronJob = require('cron').CronJob;
+const test = new CronJob('* * * * * *', function() {
+  console.log('You will see this message every second');
+}, null, true, 'America/Los_Angeles');
 
 class PopupHome extends React.Component {
   constructor(props) {
@@ -124,7 +128,6 @@ class PopupHome extends React.Component {
     };
     this.goHome = this.goHome.bind(this);
   }
-
   componentDidMount() {
     Object.keys(this.props.companies).map(company =>
       this.props.getMostRecentPrice(company)
