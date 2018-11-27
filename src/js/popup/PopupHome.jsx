@@ -18,6 +18,7 @@ import {
   fetchHistoricalPrices,
   fetchHistoricalArticles,
   fetchSetting,
+  fetchAverageSentiment,
 } from '../store';
 import { storeThunker } from '../popup';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -113,6 +114,7 @@ class PopupHome extends React.Component {
     this.props.getHistoricalPrices('aapl', '5d');
     this.props.getHistoricalArticles('aapl');
     this.props.getSetting('aapl');
+    this.props.getSentiment('aapl');
   }
 
   goHome() {
@@ -129,6 +131,7 @@ class PopupHome extends React.Component {
     const recentPrice = this.props.companies.aapl.recentPrice;
     const historicalArticles = this.props.companies.aapl.historicalArticles;
     const settingThreshold = this.props.companies.aapl.setting;
+    const sentimentValue = this.props.companies.aapl.sentiment;
     const { classes } = this.props;
 
     switch (this.state.view) {
@@ -249,6 +252,7 @@ class PopupHome extends React.Component {
             <Chart
               historicalPricesArr={historicalPrices}
               historicalArticlesArr={historicalArticles}
+              sentimentValue={sentimentValue}
               recentPrice={recentPrice}
               onBackButtonClick={this.goHome}
             />
@@ -295,6 +299,8 @@ const mapDispatch = dispatch => ({
   getHistoricalArticles: company =>
     storeThunker.dispatch(fetchHistoricalArticles(company)),
   getSetting: company => storeThunker.dispatch(fetchSetting(company)),
+  getSentiment: company =>
+    storeThunker.dispatch(fetchAverageSentiment(company)),
 });
 
 export default withStyles(styles)(

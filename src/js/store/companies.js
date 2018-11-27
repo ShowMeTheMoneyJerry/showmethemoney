@@ -20,6 +20,10 @@ export const POST_SETTING = 'POST_SETTING';
 export const EDIT_SETTING = 'EDIT_SETTING';
 export const REMOVE_SETTING = 'REMOVE_SETTING';
 
+// Sentiment
+export const GET_SENTIMENT = 'GET_SENTIMENT';
+export const POST_SENTIMENT = 'POST_SENTIMENT';
+
 // Action Creators
 export const removeCompany = comp => ({
   type: 'REMOVE_COMPANY',
@@ -68,6 +72,17 @@ export const editSetting = result => ({
 
 export const removeSetting = result => ({
   type: 'REMOVE_SETTING',
+  result,
+});
+
+//Sentiment
+export const getAverageSentiment = result => ({
+  type: GET_SENTIMENT,
+  result,
+});
+
+export const postAverageSentiment = result => ({
+  type: POST_SENTIMENT,
   result,
 });
 
@@ -149,13 +164,24 @@ export const deleteSetting = companyName => async dispatch => {
   }
 };
 
+export const fetchAverageSentiment = companyName => async dispatch => {
+  try {
+    let url = `https://makescents.herokuapp.com/api/sentiment/${companyName}`;
+    const { data } = await axios.get(url);
+    const result = { companyName, data };
+    dispatch(getAverageSentiment(result));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // Reducer
 const initialState = {
   aapl: {
     recentPrice: 0,
     historicalPrices: [],
     view: 'thumbs-up',
-    sentiment: 1,
+    sentiment: {},
     recentArticle: {},
     historicalArticles: [],
     setting: {},
@@ -164,7 +190,7 @@ const initialState = {
     recentPrice: '$ 80.00',
     historicalPrices: [],
     view: 'thumbs-down',
-    sentiment: 1,
+    sentiment: {},
     recentArticle: {},
     historicalArticles: [],
     setting: {},
@@ -173,7 +199,7 @@ const initialState = {
     recentPrice: '$ 80.00',
     historicalPrices: [],
     view: 'thumbs-down',
-    sentiment: 1,
+    sentiment: {},
     recentArticle: {},
     historicalArticles: [],
     setting: {},
@@ -182,7 +208,7 @@ const initialState = {
     recentPrice: '$ 80.00',
     historicalPrices: [],
     view: 'thumbs-down',
-    sentiment: 1,
+    sentiment: {},
     recentArticle: {},
     historicalArticles: [],
     setting: {},
@@ -191,7 +217,7 @@ const initialState = {
     recentPrice: '$ 24.56',
     historicalPrices: [],
     view: 'thumbs-middle',
-    sentiment: 1,
+    sentiment: {},
     recentArticle: {},
     historicalArticles: [],
     setting: {},
@@ -232,6 +258,9 @@ const companies = (state = initialState, action) => {
       return state;
     case REMOVE_SETTING:
       state[`${action.result.companyName}`].setting = {};
+      return state;
+    case GET_SENTIMENT:
+      state[`${action.result.companyName}`].sentiment = action.result.data;
       return state;
     default:
       return state;
