@@ -137,9 +137,9 @@ class Chart extends Component {
 
     sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
 
-    console.log('weekAxis', weekAxis);
-    console.log('pricesData', pricesData);
-    console.log('sentimentData', sentimentData);
+    console.log("weekAxis", weekAxis);
+    console.log("pricesData", pricesData);
+    console.log("sentimentData", sentimentData);
 
     const data = {
       labels: weekAxis,
