@@ -10,6 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import green from '@material-ui/core/colors/green';
 import {Switch} from '@material-ui/core';
 import ArticleList from './components/ArticleList';
+import Search from './components/Search';
 import Chart from './components/Chart';
 import Settings from './components/Settings';
 import Divider from '@material-ui/core/Divider';
@@ -220,6 +221,7 @@ class PopupHome extends React.Component {
 									</div>
 								);
 							})}
+							<Search />
 						</List>
 					</div>
 				);

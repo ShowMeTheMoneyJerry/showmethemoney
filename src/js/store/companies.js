@@ -133,13 +133,12 @@ const companies = (state = initialState, action) => {
 				historicalPrices: []
 			};
 			return state;
-		// case REMOVE_COMPANY:
-		// 	const newState = state;
-		// 	delete newState[action.comp];
-		// 	return newState;
+		case REMOVE_COMPANY:
+			delete state[`${action.result.companyName}`];
+			return state;
 		case SET_MOST_RECENT_PRICE:
 			state[`${action.result.companyName}`].recentPrice = action.result.data;
-			console.log('most recent aapl price:', state[`${action.result.companyName}`]);
+			console.log('most recent price:', state[`${action.result.companyName}`]);
 			return state;
 		case SET_HISTORICAL_PRICES:
 			state[`${action.result.companyName}`].historicalPrices = action.result.data;
