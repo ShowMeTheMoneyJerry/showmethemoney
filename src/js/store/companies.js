@@ -22,7 +22,6 @@ export const REMOVE_SETTING = 'REMOVE_SETTING';
 
 // Sentiment
 export const GET_SENTIMENT = 'GET_SENTIMENT';
-export const POST_SENTIMENT = 'POST_SENTIMENT';
 
 // Action Creators
 export const removeCompany = comp => ({
@@ -78,11 +77,6 @@ export const removeSetting = result => ({
 //Sentiment
 export const getAverageSentiment = result => ({
   type: GET_SENTIMENT,
-  result,
-});
-
-export const postAverageSentiment = result => ({
-  type: POST_SENTIMENT,
   result,
 });
 
