@@ -1,44 +1,57 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { changeSetting, deleteSetting } from '../../store';
-import { storeThunker } from '../../popup';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { changeSetting, deleteSetting } from "../../store";
+import { storeThunker } from "../../popup";
 const styles = theme => ({
   root: {
-    display: 'flex',
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   textField: {
     flexBasis: 200,
     marginTop: 15,
+    backgroundColor: "#d4f2ec"
   },
   buttonContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%"
   },
   title: {
-    fontSize: 25,
+    fontFamily: "Impact",
+    fontSize: 33,
+    marginRight: 64,
+    color: "#333",
+    width: "100%",
+    textAlign: "center",
+    fontWeight: "bold"
   },
+
   sectionTitle: {
-    marginTop: 10,
-  },
+    display: "flex",
+    marginTop: 20,
+    fontSize: 16,
+    alignItems: "center",
+    fontWeight: "bold"
+  }
 });
 
 class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      priceHigh: '',
-      priceLow: '',
-      sentimentHigh: '',
-      sentimentLow: '',
+      priceHigh: "",
+      priceLow: "",
+      sentimentHigh: "",
+      sentimentLow: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -50,7 +63,7 @@ class Settings extends React.Component {
         priceHigh,
         priceLow,
         sentimentHigh,
-        sentimentLow,
+        sentimentLow
       } = this.props.settingThreshold;
       this.setState({ priceHigh, priceLow, sentimentHigh, sentimentLow });
     }
@@ -58,18 +71,18 @@ class Settings extends React.Component {
 
   async handleChange(event) {
     await this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     });
-    this.props.updateSetting('aapl', this.state);
+    this.props.updateSetting("aapl", this.state);
   }
 
   handleClick() {
-    this.props.removeSetting('aapl');
+    this.props.removeSetting("aapl");
   }
 
   render() {
     const { classes, settingThreshold } = this.props;
-    console.log('settingThreshold', settingThreshold);
+    console.log("settingThreshold", settingThreshold);
     return (
       <div className={classes.root}>
         <div className={classes.title}>{this.props.name} Settings</div>
@@ -88,7 +101,7 @@ class Settings extends React.Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
-                  ),
+                  )
                 }}
               />
             </div>
@@ -104,7 +117,7 @@ class Settings extends React.Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
-                  ),
+                  )
                 }}
               />
             </div>
@@ -125,7 +138,7 @@ class Settings extends React.Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">%</InputAdornment>
-                  ),
+                  )
                 }}
               />
             </div>
@@ -141,7 +154,7 @@ class Settings extends React.Component {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">%</InputAdornment>
-                  ),
+                  )
                 }}
               />
             </div>
@@ -153,7 +166,7 @@ class Settings extends React.Component {
               this.props.onBackButtonClick();
             }}
           >
-            Back
+            <ArrowBackIcon />
           </Button>
           <Button onClick={this.handleClick}>Reset</Button>
         </div>
@@ -165,7 +178,7 @@ class Settings extends React.Component {
 const mapDispatch = dispatch => ({
   updateSetting: (company, setting) =>
     storeThunker.dispatch(changeSetting(company, setting)),
-  removeSetting: company => storeThunker.dispatch(deleteSetting(company)),
+  removeSetting: company => storeThunker.dispatch(deleteSetting(company))
 });
 
 export default withStyles(styles)(
