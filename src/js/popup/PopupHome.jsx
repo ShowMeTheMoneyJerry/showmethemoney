@@ -340,7 +340,7 @@ const mapState = state => ({
   companies: state.companies,
 });
 
-const mapDispatch = () => ({
+const mapDispatch = (dispatch) => ({
   addCompany: company => storeThunker.dispatch(addNewCompany(company)),
   getMostRecentPrice: company =>
     storeThunker.dispatch(fetchMostRecentPrice(company)),

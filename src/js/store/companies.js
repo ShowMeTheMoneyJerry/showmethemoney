@@ -215,12 +215,14 @@ const initialState = {
 
 const companies = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_COMPANY:
-      state[action.comp] = {
-        recentPrice: 0,
-        historicalPrices: [],
-      };
-      return state;
+		case ADD_COMPANY:
+
+		return Object.assign({}, state, {[`${action.comp}`]:
+		{
+			recentPrice: 0,
+			historicalPrices: [],
+		}
+	})
     case REMOVE_COMPANY:
 			return Object.keys(state)
 				.filter(key => key !== action.comp)
@@ -229,9 +231,13 @@ const companies = (state = initialState, action) => {
 					return result;
 					}, {});
 			//return Object.assign({}, state, {[`${action.comp}`]: undefined})
-    case SET_MOST_RECENT_PRICE:
-      state[`${action.result.companyName}`].recentPrice = action.result.data;
-      return state;
+		case SET_MOST_RECENT_PRICE:
+					return Object.assign({}, state, {[`${action.result.companyName}`]: {
+						recentPrice: action.result.data
+					}
+				})
+      // state[`${action.result.companyName}`].recentPrice = action.result.data;
+      // return state;
     case SET_HISTORICAL_PRICES:
       state[`${action.result.companyName}`].historicalPrices =
         action.result.data;
