@@ -226,10 +226,14 @@ const companies = (state = initialState, action) => {
         historicalPrices: [],
       };
       return state;
-    // case REMOVE_COMPANY:
-    // 	const newState = state;
-    // 	delete newState[action.comp];
-    // 	return newState;
+    case REMOVE_COMPANY:
+			return Object.keys(state)
+				.filter(key => key !== action.comp)
+				.reduce((result, current) => {
+					result[current] = state[current];
+					return result;
+					}, {});
+			//return Object.assign({}, state, {[`${action.comp}`]: undefined})
     case SET_MOST_RECENT_PRICE:
       state[`${action.result.companyName}`].recentPrice = action.result.data;
       return state;
