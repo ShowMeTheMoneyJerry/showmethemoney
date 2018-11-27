@@ -244,6 +244,7 @@ class PopupHome extends React.Component {
             <Settings
               name={this.state.selectedCompany.name}
               onBackButtonClick={this.goHome}
+              settingThreshold={settingThreshold}
             />
           </div>
         );
