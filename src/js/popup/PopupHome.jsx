@@ -168,14 +168,16 @@ class PopupHome extends React.Component {
 
               {Object.keys(this.props.companies).map((company, idx) => {
                 let thumb = null;
-                if (company.sentiment > 0) {
+                if (this.props.companies.aapl.sentiment[idx].value > 0) {
                   thumb = (
                     <img
                       src={require("../../img/thumbsUp.png")}
                       style={{ width: 30, height: 30, marginLeft: 10 }}
                     />
                   );
-                } else if (company.sentiment < -1) {
+                } else if (
+                  this.props.companies.aapl.sentiment[idx].value < -1
+                ) {
                   thumb = (
                     <img
                       src={require("../../img/thumbsDown.png")}
