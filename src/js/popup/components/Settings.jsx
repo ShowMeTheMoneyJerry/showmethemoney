@@ -69,7 +69,7 @@ class Settings extends React.Component {
 
   render() {
     const { classes, settingThreshold } = this.props;
-    console.log('settingThreshold', settingThreshold.companyId);
+    console.log('settingThreshold', settingThreshold);
     return (
       <div className={classes.root}>
         <div className={classes.title}>{this.props.name} Settings</div>
