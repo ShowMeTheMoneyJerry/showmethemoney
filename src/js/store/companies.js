@@ -24,198 +24,193 @@ export const REMOVE_SETTING = 'REMOVE_SETTING';
 export const GET_SENTIMENT = 'GET_SENTIMENT';
 
 // Action Creators
-export const removeCompany = comp => ({
-  type: 'REMOVE_COMPANY',
-  comp,
+export const removeCompany = (comp) => ({
+	type: 'REMOVE_COMPANY',
+	comp
 });
 
-export const addCompany = comp => ({
-  type: 'ADD_COMPANY',
-  comp,
+export const addCompany = (comp) => ({
+	type: 'ADD_COMPANY',
+	comp
 });
 
 //Prices
-export const setMostRecentPrice = result => ({
-  type: SET_MOST_RECENT_PRICE,
-  result,
+export const setMostRecentPrice = (result) => ({
+	type: SET_MOST_RECENT_PRICE,
+	result
 });
 
-export const setHistoricalPrices = result => ({
-  type: SET_HISTORICAL_PRICES,
-  result,
+export const setHistoricalPrices = (result) => ({
+	type: SET_HISTORICAL_PRICES,
+	result
 });
 
 //articles
 
-export const setHistoricalArticles = result => ({
-  type: 'SET_HISTORICAL_ARTICLES',
-  result,
+export const setHistoricalArticles = (result) => ({
+	type: 'SET_HISTORICAL_ARTICLES',
+	result
 });
 
 // Setting
 
-export const getSetting = result => ({
-  type: 'GET_SETTING',
-  result,
+export const getSetting = (result) => ({
+	type: 'GET_SETTING',
+	result
 });
 
-export const postSetting = result => ({
-  type: 'POST_SETTING',
-  result,
+export const postSetting = (result) => ({
+	type: 'POST_SETTING',
+	result
 });
 
-export const editSetting = result => ({
-  type: 'EDIT_SETTING',
-  result,
+export const editSetting = (result) => ({
+	type: 'EDIT_SETTING',
+	result
 });
 
-export const removeSetting = result => ({
-  type: 'REMOVE_SETTING',
-  result,
+export const removeSetting = (result) => ({
+	type: 'REMOVE_SETTING',
+	result
 });
 
 //Sentiment
-export const getAverageSentiment = result => ({
-  type: GET_SENTIMENT,
-  result,
+export const getAverageSentiment = (result) => ({
+	type: GET_SENTIMENT,
+	result
 });
 
 //thunk Creators
-export const fetchMostRecentPrice = companyName => async dispatch => {
-  try {
-    let url = `https://api.iextrading.com/1.0/stock/${companyName}/price`;
-    const { data } = await axios.get(url);
-    const result = { companyName, data };
-    dispatch(setMostRecentPrice(result));
-  } catch (error) {
-    console.error(error);
-  }
+export const addNewCompany = (companyName) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/api/company/`;
+		// await axios.post(url, companyName);
+		dispatch(addCompany(companyName));
+	} catch (error) {
+		console.error(error);
+	}
+};
+export const fetchMostRecentPrice = (companyName) => async (dispatch) => {
+	try {
+		let url = `https://api.iextrading.com/1.0/stock/${companyName}/price`;
+		const {data} = await axios.get(url);
+		const result = {companyName, data};
+		dispatch(setMostRecentPrice(result));
+	} catch (error) {
+		console.error(error);
+	}
 };
 
-export const fetchHistoricalPrices = (companyName, time) => async dispatch => {
-  try {
-    let url = `https://api.iextrading.com/1.0/stock/${companyName}/chart/${time}`;
-    const { data } = await axios.get(url);
-    const result = { companyName, data };
-    dispatch(setHistoricalPrices(result));
-  } catch (error) {
-    console.error(error);
-  }
+export const fetchHistoricalPrices = (companyName, time) => async (dispatch) => {
+	try {
+		let url = `https://api.iextrading.com/1.0/stock/${companyName}/chart/${time}`;
+		const {data} = await axios.get(url);
+		const result = {companyName, data};
+		dispatch(setHistoricalPrices(result));
+	} catch (error) {
+		console.error(error);
+	}
 };
 
-export const fetchHistoricalArticles = (
-  companyName,
-  time
-) => async dispatch => {
-  try {
-    let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
-    const { data } = await axios.get(url);
-    const result = { companyName, data };
-    dispatch(setHistoricalArticles(result));
-  } catch (error) {
-    console.error(error);
-  }
+export const fetchHistoricalArticles = (companyName, time) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
+		const {data} = await axios.get(url);
+		const result = {companyName, data};
+		dispatch(setHistoricalArticles(result));
+	} catch (error) {
+		console.error(error);
+	}
 };
 
-export const fetchSetting = companyName => async dispatch => {
-  try {
-    let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
-    const { data } = await axios.get(url);
-    const result = { companyName, data };
-    dispatch(getSetting(result));
-  } catch (error) {
-    console.error(error);
-  }
+export const fetchSetting = (companyName) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
+		const {data} = await axios.get(url);
+		const result = {companyName, data};
+		dispatch(getSetting(result));
+	} catch (error) {
+		console.error(error);
+	}
 };
 
-export const changeSetting = (companyName, setting) => async dispatch => {
-  try {
-    let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
-    if (url) {
-      const { data } = await axios.put(url, setting);
-      const result = { companyName, data };
-      console.log('changeSetting data', result);
-      dispatch(editSetting(result));
-    } else {
-      const { data } = await axios.post(url, setting);
-      const result = { companyName, data };
-      console.log('postSetting data', result);
-      dispatch(postSetting(result));
-    }
-  } catch (err) {
-    console.error(err);
-  }
+export const changeSetting = (companyName, setting) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
+		if (url) {
+			const {data} = await axios.put(url, setting);
+			const result = {companyName, data};
+			console.log('changeSetting data', result);
+			dispatch(editSetting(result));
+		} else {
+			const {data} = await axios.post(url, setting);
+			const result = {companyName, data};
+			console.log('postSetting data', result);
+			dispatch(postSetting(result));
+		}
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const deleteSetting = companyName => async dispatch => {
-  try {
-    await axios.delete(
-      `https://makescents.herokuapp.com/api/setting/1/${companyName}`
-    );
-    dispatch(removeSetting(companyName));
-  } catch (err) {
-    console.error(err);
-  }
+export const deleteSetting = (companyName) => async (dispatch) => {
+	try {
+		await axios.delete(`https://makescents.herokuapp.com/api/setting/1/${companyName}`);
+		dispatch(removeSetting(companyName));
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const fetchAverageSentiment = companyName => async dispatch => {
-  try {
-    let url = `https://makescents.herokuapp.com/api/sentiment/${companyName}`;
-    const { data } = await axios.get(url);
-    const result = { companyName, data };
-    dispatch(getAverageSentiment(result));
-  } catch (err) {
-    console.error(err);
-  }
+export const fetchAverageSentiment = (companyName) => async (dispatch) => {
+	try {
+		let url = `https://makescents.herokuapp.com/api/sentiment/${companyName}`;
+		const {data} = await axios.get(url);
+		const result = {companyName, data};
+		dispatch(getAverageSentiment(result));
+	} catch (err) {
+		console.error(err);
+	}
 };
 
 // Reducer
 const initialState = {
-  aapl: {
-    recentPrice: 0,
-    historicalPrices: [],
-    view: 'thumbs-up',
-    sentiment: {},
-    recentArticle: {},
-    historicalArticles: [],
-    setting: {},
-  },
-  googl: {
-    recentPrice: '$ 80.00',
-    historicalPrices: [],
-    view: 'thumbs-down',
-    sentiment: {},
-    recentArticle: {},
-    historicalArticles: [],
-    setting: {},
-  },
-  tsla: {
-    recentPrice: '$ 80.00',
-    historicalPrices: [],
-    view: 'thumbs-down',
-    sentiment: {},
-    recentArticle: {},
-    historicalArticles: [],
-    setting: {},
-  },
-  ebay: {
-    recentPrice: '$ 80.00',
-    historicalPrices: [],
-    view: 'thumbs-down',
-    sentiment: {},
-    recentArticle: {},
-    historicalArticles: [],
-    setting: {},
-  },
-  msft: {
-    recentPrice: '$ 24.56',
-    historicalPrices: [],
-    view: 'thumbs-middle',
-    sentiment: {},
-    recentArticle: {},
-    historicalArticles: [],
-    setting: {},
-  },
+	tsla: {
+		recentPrice: '$ 80.00',
+		historicalPrices: [],
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
+	},
+	aapl: {
+		recentPrice: 0,
+		historicalPrices: [],
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
+	},
+	googl: {
+		recentPrice: '$ 80.00',
+		historicalPrices: [],
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
+	},
+	ebay: {
+		recentPrice: '$ 80.00',
+		historicalPrices: [],
+
+		sentiment: 1,
+		recentArticle: {},
+		historicalArticles: []
+	},
+	msft: {
+		recentPrice: '$ 24.56',
+		historicalPrices: [],
+		sentiment: 1,
+		dailyArticles: [],
+		historicalArticles: []
+	}
 };
 
 const companies = (state = initialState, action) => {
@@ -263,6 +258,7 @@ const companies = (state = initialState, action) => {
     default:
       return state;
   }
+
 };
 
 export default companies;

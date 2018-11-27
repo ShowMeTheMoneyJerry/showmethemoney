@@ -7,20 +7,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
 import SettingsIcon from '@material-ui/icons/Settings';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined'
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import green from '@material-ui/core/colors/green';
 import { Switch } from '@material-ui/core';
 import ArticleList from './components/ArticleList';
 import Chart from './components/Chart';
 import Settings from './components/Settings';
+import Search from './components/Search';
 import Divider from '@material-ui/core/Divider';
 import {
+  addNewCompany,
   fetchMostRecentPrice,
   fetchHistoricalPrices,
   fetchHistoricalArticles,
   fetchSetting,
-	fetchAverageSentiment,
-	removeCompany
+  fetchAverageSentiment,
+  removeCompany,
 } from '../store';
 import { storeThunker } from '../popup';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -88,8 +90,8 @@ const styles = theme => ({
       backgroundColor: '#128fa6',
       color: '#FFFFFF',
     },
-	},
-	listItemDeleteButton: {
+  },
+  listItemDeleteButton: {
     color: '#faf9f9',
     '&:hover': {
       backgroundColor: '#128fa6',
@@ -131,12 +133,12 @@ class PopupHome extends React.Component {
     this.props.getHistoricalArticles('aapl');
     this.props.getSetting('aapl');
     this.props.getSentiment('aapl');
-	}
-	resetList() {
-		Object.keys(this.props.companies).map(company =>
+  }
+  resetList() {
+    Object.keys(this.props.companies).map(company =>
       this.props.getMostRecentPrice(company)
     );
-	}
+  }
 
   goHome() {
     this.setState({
@@ -159,7 +161,6 @@ class PopupHome extends React.Component {
       case 'home':
         return (
           <div className={classes.root}>
-            <SnackbarContent action={action} className={classes.header} />
             <h1
               className={classes.header}
               style={{ fontFamily: 'Impact', fontSize: 33, color: '#333' }}
@@ -244,32 +245,29 @@ class PopupHome extends React.Component {
                       >
                         <SettingsIcon />
                       </Button>
-											<Button
+                      <Button
                         className={classes.listItemDeleteButton}
                         onClick={() => {
+                          this.props.deleteCompany(company);
+                          //this.resetList()
+                          //this.forceUpdate()
 
-												 this.props.deleteCompany(company);
-													//this.resetList()
-													//this.forceUpdate()
+                          // this.props.state.setState({
+                          // 	companies: this.props.companies.filter(comp => {
+                          // 		return comp !== company
+                          // 	})
+                          // })
+                          // this.props.companies.filter(comp => {
+                          // 		return comp !== company
+                          // 	})
+                          //this.props.state.setState({ state: this.state})
+                          //this.state.setState({})
 
-													// this.props.state.setState({
-													// 	companies: this.props.companies.filter(comp => {
-													// 		return comp !== company
-													// 	})
-													// })
-													// this.props.companies.filter(comp => {
-													// 		return comp !== company
-													// 	})
-													//this.props.state.setState({ state: this.state})
-													//this.state.setState({})
+                          //this.forceUpdate()
 
-													//this.forceUpdate()
-
-													// this.componentDidMount()
-													//this.resetList(this.resetList.bind(this))
-
-												}
-											}
+                          // this.componentDidMount()
+                          //this.resetList(this.resetList.bind(this))
+                        }}
                       >
                         <DeleteIcon />
                       </Button>
@@ -279,6 +277,7 @@ class PopupHome extends React.Component {
                 );
               })}
             </List>
+            <Search addCompany={this.props.addCompany} />
           </div>
         );
       case 'settings':
@@ -338,12 +337,11 @@ class PopupHome extends React.Component {
 }
 
 const mapState = state => ({
-  articles: state.articles,
-  // prices: state.prices,
   companies: state.companies,
 });
 
-const mapDispatch = dispatch => ({
+const mapDispatch = () => ({
+  addCompany: company => storeThunker.dispatch(addNewCompany(company)),
   getMostRecentPrice: company =>
     storeThunker.dispatch(fetchMostRecentPrice(company)),
   getHistoricalPrices: (company, time) =>
@@ -352,10 +350,10 @@ const mapDispatch = dispatch => ({
     storeThunker.dispatch(fetchHistoricalArticles(company)),
   getSetting: company => storeThunker.dispatch(fetchSetting(company)),
   getSentiment: company =>
-		storeThunker.dispatch(fetchAverageSentiment(company)),
-	deleteCompany: company => {
-		dispatch(removeCompany(company))
-	}
+    storeThunker.dispatch(fetchAverageSentiment(company)),
+  deleteCompany: company => {
+    dispatch(removeCompany(company));
+  },
 });
 
 export default withStyles(styles)(
