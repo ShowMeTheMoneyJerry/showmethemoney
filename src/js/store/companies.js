@@ -119,23 +119,20 @@ export const fetchSetting = companyName => async dispatch => {
   }
 };
 
-export const createSetting = (companyName, setting) => async dispatch => {
-  try {
-    let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
-    const { data } = await axios.post(url, setting);
-    const result = { companyName, data };
-    dispatch(postSetting(result));
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const changeSetting = (companyName, setting) => async dispatch => {
   try {
     let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
-    const { data } = await axios.put(url, setting);
-    const result = { companyName, data };
-    dispatch(editSetting(result));
+    if (url) {
+      const { data } = await axios.put(url, setting);
+      const result = { companyName, data };
+      console.log('changeSetting data', result);
+      dispatch(editSetting(result));
+    } else {
+      const { data } = await axios.post(url, setting);
+      const result = { companyName, data };
+      console.log('postSetting data', result);
+      dispatch(postSetting(result));
+    }
   } catch (err) {
     console.error(err);
   }

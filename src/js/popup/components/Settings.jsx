@@ -4,8 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { createSetting, changeSetting, deleteSetting } from '../../store';
-
+import { changeSetting, deleteSetting } from '../../store';
+import { storeThunker } from '../../popup';
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -41,6 +41,7 @@ class Settings extends React.Component {
       sentimentLow: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -55,16 +56,20 @@ class Settings extends React.Component {
     }
   }
 
-  handleChange(event) {
-    this.setState({
+  async handleChange(event) {
+    await this.setState({
       [event.target.name]: event.target.value,
     });
-    console.log('this.state', this.state);
+    this.props.updateSetting('aapl', this.state);
+  }
+
+  handleClick() {
+    this.props.removeSetting('aapl');
   }
 
   render() {
     const { classes, settingThreshold } = this.props;
-    console.log('settingThreshold', settingThreshold);
+    console.log('settingThreshold', settingThreshold.companyId);
     return (
       <div className={classes.root}>
         <div className={classes.title}>{this.props.name} Settings</div>
@@ -150,18 +155,7 @@ class Settings extends React.Component {
           >
             Back
           </Button>
-          <Button
-            onClick={() => {
-              this.setState({
-                priceHigh: '',
-                priceLow: '',
-                sentimentHigh: '',
-                sentimentLow: '',
-              });
-            }}
-          >
-            Reset
-          </Button>
+          <Button onClick={this.handleClick}>Reset</Button>
         </div>
       </div>
     );
@@ -169,8 +163,6 @@ class Settings extends React.Component {
 }
 
 const mapDispatch = dispatch => ({
-  addSetting: (company, setting) =>
-    storeThunker.dispatch(createSetting(company, setting)),
   updateSetting: (company, setting) =>
     storeThunker.dispatch(changeSetting(company, setting)),
   removeSetting: company => storeThunker.dispatch(deleteSetting(company)),
