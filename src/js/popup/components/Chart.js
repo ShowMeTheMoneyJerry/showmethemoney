@@ -50,9 +50,8 @@ const styles = theme => ({
 
 class Chart extends Component {
   render() {
-    const { historicalPricesArr } = this.props;
+    const { historicalPricesArr, sentimentValue } = this.props;
     const { recentPrice } = this.props;
-
     // 7 days x-axis including today
     let weekAxis = [];
     for (let i = 6; i >= 0; i--) {
@@ -102,35 +101,45 @@ class Chart extends Component {
       }
     }
 
-    // adding most recent price at the end of the graph
-    // if (pricesData && recentPrice) {
-    //   console.log('this one is weird.... ');
-    //   const valueToAdd = pricesData[pricesData.length - 1].y;
-    //   pricesData.push({ x: today, y: valueToAdd });
-    // } else {
-    //   pricesData.push({ x: today, y: recentPrice });
-    // }
-
     pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
+
     // for sentiment data-----------------------------------
-    const dateFilteredSentiment = this.props.historicalArticlesArr.filter(
-      elem => weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
+
+    sentimentValue.sort(function(a, b) {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return new Date(a.date) - new Date(b.date);
+    });
+    const dateFilteredSentiment = sentimentValue.filter(elem =>
+      weekAxis.includes(elem.date)
     );
 
     // ---- sentimentData format looks like this --> {x: "Fri, 16 Nov 2018", y: 10}
     const sentimentData = [];
     for (let i = 0; i < dateFilteredSentiment.length; i++) {
       let obj = {};
-      const formattedDate = new Date(dateFilteredSentiment[i].date)
-        .toUTCString()
-        .slice(0, 16);
-      obj.x = formattedDate;
-      obj.y = dateFilteredSentiment[i].sentiment;
+      obj.x = dateFilteredSentiment[i].date;
+      obj.y = dateFilteredSentiment[i].value;
+
+      if (dateFilteredSentiment[0].date !== weekAxis[0]) {
+        let addingObj = {};
+        const dateOnlySentArr = sentimentValue.map(elem => elem.date);
+        const addingSentiment =
+          sentimentArr[
+            dateOnlySentArr.indexOf(dateFilteredSentiment[0].date) - 1
+          ];
+        addingObj.x = weekAxis[0];
+        addingObj.y = addingSentiment.value;
+        pricesData.push(addingObj);
+      }
       sentimentData.push(obj);
     }
+
     sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
 
-    // issue: average sentiment로 바꿔야 함. daily average sentiment를 어디에서 계산해서 어떻게 저장할 것인지 정해야 함.
+    console.log('weekAxis', weekAxis);
+    console.log('pricesData', pricesData);
+    console.log('sentimentData', sentimentData);
 
     const data = {
       labels: weekAxis,
