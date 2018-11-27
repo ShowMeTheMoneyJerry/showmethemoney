@@ -6,7 +6,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core/styles';
-import InfoIcon from '@material-ui/icons/Info';
+import SettingsIcon from '@material-ui/icons/Settings';
 import green from '@material-ui/core/colors/green';
 import { Switch } from '@material-ui/core';
 import ArticleList from './components/ArticleList';
@@ -33,7 +33,7 @@ const action = (
       lorem ipsum dolorem
     </Button>
     <Button color="secondary" size="small">
-      <InfoIcon />
+      <SettingsIcon />
     </Button>
   </div>
 );
@@ -43,11 +43,12 @@ const action = (
 const styles = theme => ({
   root: {
     display: 'flex',
-    backgroundColor: '#575757',
+    backgroundColor: '#faf9f9',
     flexDirection: 'column',
     width: '600px',
     height: '100%',
     alignItems: 'center',
+    padding: 10,
   },
   list: {
     display: 'flex',
@@ -58,9 +59,10 @@ const styles = theme => ({
     display: 'flex',
     flex: 1,
     color: theme.palette.getContrastText('#c7d1d1'),
-    backgroundColor: '#c7d1d1',
+    backgroundColor: '#a3dcac',
     '&:hover': {
-      backgroundColor: '#c7d1d1',
+      backgroundColor: '#128fa6',
+      color: '#FFFFFF',
     },
   },
   listItemDataButton: {
@@ -74,11 +76,16 @@ const styles = theme => ({
 
     backgroundColor: '#d4f2ec',
     '&:hover': {
-      backgroundColor: '#d4f2ec',
+      backgroundColor: '#128fa6',
+      color: '#FFFFFF',
     },
   },
-  listItemInfoButton: {
-    color: '#daf1e9',
+  listItemSettingsButton: {
+    color: '#656565',
+    '&:hover': {
+      backgroundColor: '#128fa6',
+      color: '#FFFFFF',
+    },
   },
   listItem: {
     display: 'flex',
@@ -179,7 +186,7 @@ class PopupHome extends React.Component {
                     <ListItem key={company} className={classes.listItem}>
                       <Button
                         className={classes.listItemNameButton}
-                        color="inherit"
+                        color="primary"
                         onClick={() => {
                           this.setState({
                             selectedCompany: company,
@@ -207,12 +214,13 @@ class PopupHome extends React.Component {
                         </div>
                         <div className={classes.sentimentContainer}>
                           {/* {`view: ${this.props.companies[
-														Object.keys(this.props.companies)[idx]].view}`} */}
+														Object.keys(this.props.companies)[idx]
+                          ].view}`} */}
                           view: {thumb}
                         </div>
                       </Button>
                       <Button
-                        className={classes.listItemInfoButton}
+                        className={classes.listItemSettingsButton}
                         onClick={() => {
                           this.setState({
                             selectedCompany: company,
@@ -220,7 +228,7 @@ class PopupHome extends React.Component {
                           });
                         }}
                       >
-                        <InfoIcon />
+                        <SettingsIcon />
                       </Button>
                     </ListItem>
                     <Divider />
@@ -236,7 +244,6 @@ class PopupHome extends React.Component {
             <Settings
               name={this.state.selectedCompany.name}
               onBackButtonClick={this.goHome}
-              settingThreshold={settingThreshold}
             />
           </div>
         );
@@ -255,6 +262,7 @@ class PopupHome extends React.Component {
               sentimentValue={sentimentValue}
               recentPrice={recentPrice}
               onBackButtonClick={this.goHome}
+              name={this.state.selectedCompany}
             />
           </div>
         );
