@@ -24,8 +24,10 @@ const styles = theme => ({
     borderWidth: 10,
     borderColor: "#AED590",
     padding: 20,
-    marginLeft: 20,
-    marginRight: 20
+    marginLeft: 1,
+    marginRight: 1,
+    marginBottom: 1,
+    marginTop: 5
   },
   titleContainer: {
     display: "flex",
