@@ -1,69 +1,70 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import { createSetting, changeSetting, deleteSetting } from '../../store';
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    width: "100%",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center"
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   textField: {
     flexBasis: 200,
-    marginTop: 15
+    marginTop: 15,
   },
   buttonContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    width: "100%"
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   title: {
-    fontSize: 25
+    fontSize: 25,
   },
   sectionTitle: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 class Settings extends React.Component {
   constructor() {
     super();
     this.state = {
-      stockAmountHigh: "",
-      stockAmountLow: "",
-      sentimentHigh: "",
-      sentimentLow: ""
+      priceHigh: '',
+      priceLow: '',
+      sentimentHigh: '',
+      sentimentLow: '',
     };
-
-    this.handleHighStockChange = this.handleHighStockChange.bind(this);
-    this.handleLowStockChange = this.handleLowStockChange.bind(this);
-    this.handleHighSentimentChange = this.handleHighSentimentChange.bind(this);
-    this.handleLowSentimentChange = this.handleLowSentimentChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleHighStockChange(event) {
-    this.setState({ stockAmountHigh: event.target.value });
+  componentDidMount() {
+    if (this.props.settingThreshold) {
+      const {
+        priceHigh,
+        priceLow,
+        sentimentHigh,
+        sentimentLow,
+      } = this.props.settingThreshold;
+      this.setState({ priceHigh, priceLow, sentimentHigh, sentimentLow });
+    }
   }
 
-  handleLowStockChange(event) {
-    this.setState({ stockAmountLow: event.target.value });
-  }
-  handleHighSentimentChange(event) {
-    const onlyNums = event.target.value.replace(/[^0-9]/g, "");
-    this.setState({ sentimentHigh: onlyNums });
-  }
-  handleLowSentimentChange(event) {
-    const onlyNums = event.target.value.replace(/[^0-9]/g, "");
-    this.setState({ sentimentLow: onlyNums });
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+    console.log('this.state', this.state);
   }
 
   render() {
-    const { classes } = this.props;
-
+    const { classes, settingThreshold } = this.props;
+    console.log('settingThreshold', settingThreshold);
     return (
       <div className={classes.root}>
         <div className={classes.title}>{this.props.name} Settings</div>
@@ -76,12 +77,13 @@ class Settings extends React.Component {
                 className={classes.textField}
                 variant="outlined"
                 label="High"
-                value={this.state.stockAmountHigh}
-                onChange={this.handleHighStockChange}
+                name="priceHigh"
+                value={this.state.priceHigh}
+                onChange={this.handleChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
-                  )
+                  ),
                 }}
               />
             </div>
@@ -91,12 +93,13 @@ class Settings extends React.Component {
                 className={classes.textField}
                 variant="outlined"
                 label="Low"
-                value={this.state.stockAmountLow}
-                onChange={this.handleLowStockChange}
+                name="priceLow"
+                value={this.state.priceLow}
+                onChange={this.handleChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
-                  )
+                  ),
                 }}
               />
             </div>
@@ -111,12 +114,13 @@ class Settings extends React.Component {
                 className={classes.textField}
                 variant="outlined"
                 label="High"
+                name="sentimentHigh"
                 value={this.state.sentimentHigh}
-                onChange={this.handleHighSentimentChange}
+                onChange={this.handleChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">%</InputAdornment>
-                  )
+                  ),
                 }}
               />
             </div>
@@ -126,12 +130,13 @@ class Settings extends React.Component {
                 className={classes.textField}
                 variant="outlined"
                 label="Low"
+                name="sentimentLow"
                 value={this.state.sentimentLow}
-                onChange={this.handleLowSentimentChange}
+                onChange={this.handleChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">%</InputAdornment>
-                  )
+                  ),
                 }}
               />
             </div>
@@ -148,10 +153,10 @@ class Settings extends React.Component {
           <Button
             onClick={() => {
               this.setState({
-                stockAmountHigh: "",
-                stockAmountLow: "",
-                sentimentHigh: "",
-                sentimentLow: ""
+                priceHigh: '',
+                priceLow: '',
+                sentimentHigh: '',
+                sentimentLow: '',
               });
             }}
           >
@@ -163,4 +168,17 @@ class Settings extends React.Component {
   }
 }
 
-export default withStyles(styles)(Settings);
+const mapDispatch = dispatch => ({
+  addSetting: (company, setting) =>
+    storeThunker.dispatch(createSetting(company, setting)),
+  updateSetting: (company, setting) =>
+    storeThunker.dispatch(changeSetting(company, setting)),
+  removeSetting: company => storeThunker.dispatch(deleteSetting(company)),
+});
+
+export default withStyles(styles)(
+  connect(
+    null,
+    mapDispatch
+  )(Settings)
+);
