@@ -248,8 +248,11 @@ const companies = (state = initialState, action) => {
       state[`${action.result.companyName}`].setting = action.result.data;
       return state;
     case EDIT_SETTING:
-      state[`${action.result.companyName}`].setting = action.result.data;
-      return state;
+      return Object.assign({}, state, {
+        [`${action.result.companyName}`.setting]: action.result.data,
+      });
+    // state[`${action.result.companyName}`].setting = action.result.data;
+    // return state;
     case REMOVE_SETTING:
       state[`${action.result.companyName}`].setting = {};
       return state;

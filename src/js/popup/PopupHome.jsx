@@ -118,9 +118,12 @@ class PopupHome extends React.Component {
     await Object.keys(this.props.companies).map(company =>
       this.props.getMostRecentPrice(company)
     );
+    await this.props.getSetting('aapl');
     await this.props.getHistoricalPrices('aapl', '5d');
     await this.props.getHistoricalArticles('aapl');
-    await this.props.getSetting('aapl');
+    Object.keys(this.props.companies).map(el =>
+      this.props.getHistoricalArticles(el)
+    );
     await this.props.getSentiment('aapl');
   }
 
@@ -137,6 +140,7 @@ class PopupHome extends React.Component {
     const historicalPrices = this.props.companies.aapl.historicalPrices;
     const recentPrice = this.props.companies.aapl.recentPrice;
     const historicalArticles = this.props.companies.aapl.historicalArticles;
+    console.log('our state!', this.props.companies);
     const settingThreshold = this.props.companies.aapl.setting;
     const sentimentValue = this.props.companies.aapl.sentiment;
     const { classes } = this.props;
@@ -268,7 +272,7 @@ class PopupHome extends React.Component {
           </div>
         );
       case 'articleList':
-        if (!this.props.companies.aapl.historicalArticles) {
+        if (!historicalArticles) {
           return (
             <CircularProgress className={classes.progress} color="secondary" />
           );
@@ -276,8 +280,9 @@ class PopupHome extends React.Component {
         return (
           <div className={classes.root}>
             <ArticleList
-              articles={this.props.companies.aapl.historicalArticles}
+              articles={historicalArticles}
               onBackButtonClick={this.goHome}
+              company={this.state.selectedCompany}
             />
           </div>
         );
