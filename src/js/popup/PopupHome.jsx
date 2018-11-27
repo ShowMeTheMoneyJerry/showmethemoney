@@ -112,6 +112,9 @@ const styles = (theme) => ({
 	sentimentContainer: {
 		display: 'flex',
 		alignItems: 'center'
+	},
+	imageTitle: {
+		marginLeft: 50
 	}
 });
 // const CronJob = require('cron').CronJob;
@@ -160,9 +163,14 @@ class PopupHome extends React.Component {
 			case 'home':
 				return (
 					<div className={classes.root}>
-						<h1 className={classes.header} style={{fontFamily: 'Impact', fontSize: 33, color: '#333'}}>
-							makes¢ents
-						</h1>
+						<img
+							src={require('../../img/MAKESCENTS.png')}
+							style={{
+								display: 'flex',
+								width: 650,
+								alignSelf: 'center'
+							}}
+						/>
 						<List className={classes.list}>
 							{/* clever way to map through an Object:
 							 let obj = { first: 'someVal' };
@@ -170,14 +178,14 @@ class PopupHome extends React.Component {
 
 							{Object.keys(this.props.companies).map((company, idx) => {
 								let thumb = null;
-								if (company.sentiment > 0) {
+								if (this.props.companies.aapl.sentiment[idx].value > 0) {
 									thumb = (
 										<img
 											src={require('../../img/thumbsUp.png')}
 											style={{width: 30, height: 30, marginLeft: 10}}
 										/>
 									);
-								} else if (company.sentiment < -1) {
+								} else if (this.props.companies.aapl.sentiment[idx].value < -1) {
 									thumb = (
 										<img
 											src={require('../../img/thumbsDown.png')}

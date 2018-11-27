@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core/styles';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import {changeSetting, deleteSetting, fetchSetting} from '../../store';
 import {storeThunker} from '../../popup';
 
@@ -18,7 +19,8 @@ const styles = (theme) => ({
 	},
 	textField: {
 		flexBasis: 200,
-		marginTop: 15
+		marginTop: 15,
+		backgroundColor: '#d4f2ec'
 	},
 	buttonContainer: {
 		display: 'flex',
@@ -26,10 +28,21 @@ const styles = (theme) => ({
 		width: '100%'
 	},
 	title: {
-		fontSize: 25
+		fontFamily: 'Impact',
+		fontSize: 33,
+		marginRight: 64,
+		color: '#333',
+		width: '100%',
+		textAlign: 'center',
+		fontWeight: 'bold'
 	},
+
 	sectionTitle: {
-		marginTop: 10
+		display: 'flex',
+		marginTop: 20,
+		fontSize: 16,
+		alignItems: 'center',
+		fontWeight: 'bold'
 	}
 });
 
@@ -152,7 +165,7 @@ class Settings extends React.Component {
 							this.props.onBackButtonClick();
 						}}
 					>
-						Back
+						<ArrowBackIcon />
 					</Button>
 					<Button onClick={this.handleClick}>Reset</Button>
 				</div>

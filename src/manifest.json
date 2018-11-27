@@ -13,10 +13,10 @@
   },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_icon": "Badge.png"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "Badge.png"
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

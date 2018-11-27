@@ -12,14 +12,10 @@ import AddIcon from '@material-ui/icons/Add';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
-import { connect } from 'react-redux';
-import { storeThunker } from '../../popup';
+import {connect} from 'react-redux';
+import {storeThunker} from '../../popup';
 
-import {
-
-  fetchMostRecentPrice,
-
-} from '../../store';
+import {fetchMostRecentPrice} from '../../store';
 
 const styles = (theme) => ({
 	appFrame: {
@@ -40,12 +36,9 @@ const styles = (theme) => ({
 		fullwidth: 'true',
 		transformOrigin: 'left'
 	},
-	snackbar: {
-		position: 'relative',
-		backgroundColor: '#faf9f9'
-	},
 	rightIcon: {
-		marginLeft: theme.spacing.unit
+		marginLeft: theme.spacing.unit,
+		position: 'absolute'
 	}
 });
 
@@ -88,8 +81,8 @@ class Search extends React.Component {
 					color="primary"
 					className={classes.button}
 					onClick={() => {
-						this.props.addCompany(this.state.name)
-						this.props.getMostRecentPrice(this.state.name)
+						this.props.addCompany(this.state.name);
+						this.props.getMostRecentPrice(this.state.name);
 					}}
 				>
 					{/* <Icon className={classes.rightIcon} size="small">
@@ -102,19 +95,13 @@ class Search extends React.Component {
 	}
 }
 
-const mapState = state => ({
-  companies: state.companies,
+const mapState = (state) => ({
+	companies: state.companies
 });
 
 const mapDispatch = (dispatch) => ({
-	getMostRecentPrice: company =>
-		dispatch(fetchMostRecentPrice(company)),
-	});
+	getMostRecentPrice: (company) => dispatch(fetchMostRecentPrice(company))
+});
 
-export default withStyles(styles)(
-  connect(
-    mapState,
-    mapDispatch
-  )(Search)
-);
+export default withStyles(styles)(connect(mapState, mapDispatch)(Search));
 //export default withStyles(styles)(Search);
