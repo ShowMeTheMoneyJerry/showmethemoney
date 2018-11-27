@@ -112,6 +112,7 @@ export const fetchHistoricalPrices = (companyName, time) => async (dispatch) => 
 	}
 };
 
+<<<<<<< HEAD
 export const fetchHistoricalArticles = (companyName, time) => async (dispatch) => {
 	try {
 		let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
@@ -132,6 +133,31 @@ export const fetchSetting = (companyName) => async (dispatch) => {
 	} catch (error) {
 		console.error(error);
 	}
+=======
+export const fetchHistoricalArticles = companyName => async dispatch => {
+  try {
+    // let url = `https://makescents.herokuapp.com/api/article/${companyName}`;
+    let url = `https://makescents.herokuapp.com/api/article/${companyName}/86400000`;
+    const { data } = await axios.get(url);
+    console.log('dataaaaa', data);
+    const result = { companyName, data };
+    dispatch(setHistoricalArticles(result));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchSetting = companyName => async dispatch => {
+  try {
+    let url = `https://makescents.herokuapp.com/api/setting/1/${companyName}`;
+    const { data } = await axios.get(url);
+    const result = { companyName, data };
+    console.log('get setting data', result);
+    dispatch(getSetting(result));
+  } catch (error) {
+    console.error(error);
+  }
+>>>>>>> 00f935c91b164014dfad255a43557c5dfe55c341
 };
 
 export const changeSetting = (companyName, setting) => async (dispatch) => {
@@ -253,8 +279,11 @@ const companies = (state = initialState, action) => {
       state[`${action.result.companyName}`].setting = action.result.data;
       return state;
     case EDIT_SETTING:
-      state[`${action.result.companyName}`].setting = action.result.data;
-      return state;
+      return Object.assign({}, state, {
+        [`${action.result.companyName}`.setting]: action.result.data,
+      });
+    // state[`${action.result.companyName}`].setting = action.result.data;
+    // return state;
     case REMOVE_SETTING:
       state[`${action.result.companyName}`].setting = {};
       return state;

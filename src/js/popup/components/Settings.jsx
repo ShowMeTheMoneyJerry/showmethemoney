@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { changeSetting, deleteSetting } from '../../store';
+import { changeSetting, deleteSetting, fetchSetting } from '../../store';
 import { storeThunker } from '../../popup';
 const styles = theme => ({
   root: {
@@ -53,6 +53,12 @@ class Settings extends React.Component {
         sentimentLow,
       } = this.props.settingThreshold;
       this.setState({ priceHigh, priceLow, sentimentHigh, sentimentLow });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.settingThreshold !== prevProps.settingThreshold) {
+      this.getSetting('aapl');
     }
   }
 
@@ -166,6 +172,7 @@ const mapDispatch = dispatch => ({
   updateSetting: (company, setting) =>
     storeThunker.dispatch(changeSetting(company, setting)),
   removeSetting: company => storeThunker.dispatch(deleteSetting(company)),
+  getSetting: company => storeThunker.dispatch(fetchSetting(company)),
 });
 
 export default withStyles(styles)(

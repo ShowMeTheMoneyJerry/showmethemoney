@@ -139,6 +139,7 @@ class PopupHome extends React.Component {
 		Object.keys(this.props.companies).map((company) => this.props.getMostRecentPrice(company));
 	}
 
+<<<<<<< HEAD
 	goHome() {
 		this.setState({
 			selectedCompany: '',
@@ -165,6 +166,52 @@ class PopupHome extends React.Component {
 						</h1>
 						<List className={classes.list}>
 							{/* clever way to map through an Object:
+=======
+  async componentDidMount() {
+    await Object.keys(this.props.companies).map(company =>
+      this.props.getMostRecentPrice(company)
+    );
+    await this.props.getSetting('aapl');
+    await this.props.getHistoricalPrices('aapl', '5d');
+    await this.props.getHistoricalArticles('aapl');
+    Object.keys(this.props.companies).map(el =>
+      this.props.getHistoricalArticles(el)
+    );
+    await this.props.getSentiment('aapl');
+  }
+
+  goHome() {
+    this.setState({
+      selectedCompany: '',
+      view: 'home',
+    });
+  }
+  render() {
+    if (!this.props.companies.aapl.recentPrice) {
+      return <div />;
+    }
+    const historicalPrices = this.props.companies.aapl.historicalPrices;
+    const recentPrice = this.props.companies.aapl.recentPrice;
+    const historicalArticles = this.props.companies.aapl.historicalArticles;
+    console.log('our state!', this.props.companies);
+    const settingThreshold = this.props.companies.aapl.setting;
+    const sentimentValue = this.props.companies.aapl.sentiment;
+    const { classes } = this.props;
+
+    switch (this.state.view) {
+      case 'home':
+        return (
+          <div className={classes.root}>
+            <SnackbarContent action={action} className={classes.header} />
+            <h1
+              className={classes.header}
+              style={{ fontFamily: 'Impact', fontSize: 33, color: '#333' }}
+            >
+              makes¢ents
+            </h1>
+            <List className={classes.list}>
+              {/* clever way to map through an Object:
+>>>>>>> 00f935c91b164014dfad255a43557c5dfe55c341
 							 let obj = { first: 'someVal' };
 							obj[Object.keys(obj)[0]] //returns 'someVal' */}
 
@@ -225,6 +272,7 @@ class PopupHome extends React.Component {
 													{/* {`view: ${this.props.companies[
 														Object.keys(this.props.companies)[idx]
                           ].view}`} */}
+<<<<<<< HEAD
 													view: {thumb}
 												</div>
 											</Button>
@@ -324,6 +372,85 @@ class PopupHome extends React.Component {
 				);
 		}
 	}
+=======
+                          view: {thumb}
+                        </div>
+                      </Button>
+                      <Button
+                        className={classes.listItemSettingsButton}
+                        onClick={() => {
+                          this.setState({
+                            selectedCompany: company,
+                            view: 'settings',
+                          });
+                        }}
+                      >
+                        <SettingsIcon />
+                      </Button>
+                    </ListItem>
+                    <Divider />
+                  </div>
+                );
+              })}
+            </List>
+          </div>
+        );
+      case 'settings':
+        return (
+          <div className={classes.root}>
+            <Settings
+              name={this.state.selectedCompany.name}
+              onBackButtonClick={this.goHome}
+              settingThreshold={settingThreshold}
+            />
+          </div>
+        );
+      case 'chart':
+        // layout
+        if (!this.props.companies.aapl.historicalPrices) {
+          return (
+            <CircularProgress className={classes.progress} color="secondary" />
+          );
+        }
+        return (
+          <div className={classes.root}>
+            <Chart
+              historicalPricesArr={historicalPrices}
+              historicalArticlesArr={historicalArticles}
+              sentimentValue={sentimentValue}
+              recentPrice={recentPrice}
+              onBackButtonClick={this.goHome}
+              name={this.state.selectedCompany}
+            />
+          </div>
+        );
+      case 'articleList':
+        if (!historicalArticles) {
+          return (
+            <CircularProgress className={classes.progress} color="secondary" />
+          );
+        }
+        return (
+          <div className={classes.root}>
+            <ArticleList
+              articles={historicalArticles}
+              onBackButtonClick={this.goHome}
+              company={this.state.selectedCompany}
+            />
+          </div>
+        );
+      default:
+        return (
+          <div>
+            {/* <h1>prices: {this.props.companies.aapl.recentPrice}</h1> */}
+            {/* <h1>count: {this.props.articles.historicalArticles[0].title}</h1> */}
+            <Button color="primary">Button 1</Button>
+            <Button color="primary">Button 2</Button>
+          </div>
+        );
+    }
+  }
+>>>>>>> 00f935c91b164014dfad255a43557c5dfe55c341
 }
 
 const mapState = (state) => ({
