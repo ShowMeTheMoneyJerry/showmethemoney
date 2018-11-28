@@ -227,7 +227,6 @@ const companies = (state = initialState, action) => {
 				result[current] = state[current];
 				return result;
 			}, {});
-		//return Object.assign({}, state, {[`${action.comp}`]: undefined})
 		case SET_MOST_RECENT_PRICE:
 			return Object.assign({}, state, {
 				[`${action.result.companyName}`]: {
@@ -240,8 +239,6 @@ const companies = (state = initialState, action) => {
 					setting: state[action.result.companyName].setting
 				}
 			});
-		// state[`${action.result.companyName}`].recentPrice = action.result.data;
-		// return state;
 		case SET_HISTORICAL_PRICES:
 			state[`${action.result.companyName}`].historicalPrices = action.result.data;
 			return state;
@@ -252,14 +249,20 @@ const companies = (state = initialState, action) => {
 			state[`${action.result.companyName}`].setting = action.result.data;
 			return state;
 		case POST_SETTING:
-			state[`${action.result.companyName}`].setting = action.result.data;
+			state[`${action.result.companyName}`] = action.result.data;
 			return state;
 		case EDIT_SETTING:
 			return Object.assign({}, state, {
-				[`${action.result.companyName}`.setting]: action.result.data
+				[`${action.result.companyName}`]: {
+					recentPrice: state[action.result.companyName].recentPrice,
+					historicalPrices: state[action.result.companyName].historicalPrices,
+					view: state[action.result.companyName].view,
+					sentiment: state[action.result.companyName].sentiment,
+					recentArticle: state[action.result.companyName].recentArticle,
+					historicalArticles: state[action.result.companyName].historicalArticles,
+					setting: action.result.setting
+				}
 			});
-		// state[`${action.result.companyName}`].setting = action.result.data;
-		// return state;
 		case REMOVE_SETTING:
 			state[`${action.result.companyName}`].setting = {};
 			return state;

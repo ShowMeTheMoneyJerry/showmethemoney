@@ -60,7 +60,7 @@ class Settings extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.getSetting('aapl');
+		// this.props.getSetting('aapl');
 		if (this.props.companies.aapl.setting) {
 			const {priceHigh, priceLow, sentimentHigh, sentimentLow} = this.props.companies.aapl.setting;
 			this.setState({priceHigh, priceLow, sentimentHigh, sentimentLow});
@@ -73,9 +73,9 @@ class Settings extends React.Component {
 	// 	}
 	// }
 
-	async handleChange(event) {
-		await this.setState({
-			[event.target.name]: event.target.value
+	handleChange(event) {
+		this.setState({
+			[event.target.name]: Number(event.target.value)
 		});
 		this.props.updateSetting('aapl', this.state);
 	}
@@ -88,7 +88,7 @@ class Settings extends React.Component {
 		if (!this.props.companies.aapl.setting) {
 			return <div />;
 		}
-		const {classes, settingThreshold} = this.props;
+		const {classes} = this.props;
 		console.log('here is this.props.companies.aapl.setting', this.props.companies.aapl.setting);
 		return (
 			<div className={classes.root}>
