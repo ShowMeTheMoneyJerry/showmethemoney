@@ -1,51 +1,51 @@
-import React, { Component } from "react";
-import { Line } from "react-chartjs-2";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const plugins = [
   {
     afterDraw: (chartInstance, easing) => {
       const ctx = chartInstance.chart.ctx;
       //ctx.fillText("This text drawn by a plugin", 100, 100);
-    }
-  }
+    },
+  },
 ];
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%"
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
   },
   graph: {
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderWidth: 10,
-    borderColor: "#AED590",
+    borderColor: '#AED590',
     padding: 20,
-    marginTop: 5
+    marginTop: 5,
   },
   titleContainer: {
-    display: "flex",
+    display: 'flex',
     paddingTop: 25,
     paddingBottom: 15,
-    backgroundImage: `url(${require("../../../img/headerBackground.png")})`
+    backgroundImage: `url(${require('../../../img/headerBackground.png')})`,
   },
   title: {
     fontSize: 28,
-    fontFamily: "Impact",
+    fontFamily: 'Impact',
     fontSize: 33,
-    color: "#333",
+    color: '#333',
     marginBottom: 10,
     marginRight: 64,
-    width: "100%",
-    textAlign: "center",
-    fontWeight: "bold"
+    width: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   button: {
-    alignSelf: "flex-start"
-  }
+    alignSelf: 'flex-start',
+  },
 });
 
 class Chart extends Component {
@@ -53,17 +53,16 @@ class Chart extends Component {
     const { historicalPricesArr, sentimentValue } = this.props;
     const { recentPrice } = this.props;
     // 7 days x-axis including today
-    let weekAxis = [];
-    for (let i = 6; i >= 0; i--) {
+    let monthAxis = [];
+    for (let i = 30; i >= 0; i--) {
       let date = new Date(new Date() - 86400000 * i);
-      weekAxis.push(date.toUTCString().slice(0, 16));
+      monthAxis.push(date.toUTCString().slice(0, 16));
     }
 
     // for price data-----------------------------------
     const dateFilteredPrices = historicalPricesArr.filter(elem =>
-      weekAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
+      monthAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
-
     // ---- pricesData format looks like this --> {x: "Fri, 16 Nov 2018", y: 153.25}
     let pricesData = [];
     for (let i = 0; i < dateFilteredPrices.length; i++) {
@@ -75,14 +74,14 @@ class Chart extends Component {
       obj.y = dateFilteredPrices[i].close;
 
       // adding the previous day's price to the beginning of the graph
-      if (i === 0 && formattedDate !== weekAxis[0]) {
+      if (i === 0 && formattedDate !== monthAxis[0]) {
         let addingObj = {};
         const dateModifiedPricesArr = historicalPricesArr.map(elem =>
           new Date(elem.date).toUTCString().slice(0, 16)
         );
         const addingPrice =
           historicalPricesArr[dateModifiedPricesArr.indexOf(formattedDate) - 1];
-        addingObj.x = weekAxis[0];
+        addingObj.x = monthAxis[0];
         addingObj.y = addingPrice.close;
         pricesData.push(addingObj);
       }
@@ -101,7 +100,7 @@ class Chart extends Component {
       }
     }
 
-    pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
+    pricesData.unshift({ labels: pricesData.map(elem => elem.x.slice(0, 11)) });
 
     // for sentiment data-----------------------------------
 
@@ -111,7 +110,7 @@ class Chart extends Component {
       return new Date(a.date) - new Date(b.date);
     });
     const dateFilteredSentiment = sentimentValue.filter(elem =>
-      weekAxis.includes(elem.date)
+      monthAxis.includes(elem.date)
     );
 
     // ---- sentimentData format looks like this --> {x: "Fri, 16 Nov 2018", y: 10}
@@ -121,14 +120,14 @@ class Chart extends Component {
       obj.x = dateFilteredSentiment[i].date;
       obj.y = dateFilteredSentiment[i].value;
 
-      if (dateFilteredSentiment[0].date !== weekAxis[0]) {
+      if (dateFilteredSentiment[0].date !== monthAxis[0]) {
         let addingObj = {};
         const dateOnlySentArr = sentimentValue.map(elem => elem.date);
         const addingSentiment =
           sentimentArr[
             dateOnlySentArr.indexOf(dateFilteredSentiment[0].date) - 1
           ];
-        addingObj.x = weekAxis[0];
+        addingObj.x = monthAxis[0];
         addingObj.y = addingSentiment.value;
         pricesData.push(addingObj);
       }
@@ -137,93 +136,93 @@ class Chart extends Component {
 
     sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
 
-    console.log("weekAxis", weekAxis);
-    console.log("pricesData", pricesData);
-    console.log("sentimentData", sentimentData);
+    console.log('monthAxis', monthAxis);
+    console.log('pricesData', pricesData);
+    // console.log('sentimentData', sentimentData);
 
     const data = {
-      labels: weekAxis,
+      labels: monthAxis,
       datasets: [
         {
-          label: "Stock Price",
-          type: "line",
+          label: 'Stock Price',
+          type: 'line',
           data: pricesData,
           fill: false,
-          borderColor: "#EC932F",
-          backgroundColor: "#EC932F",
-          pointBorderColor: "#EC932F",
-          pointBackgroundColor: "#EC932F",
-          pointHoverBackgroundColor: "#EC932F",
-          pointHoverBorderColor: "#EC932F",
-          yAxisID: "y-axis-1"
+          borderColor: '#EC932F',
+          backgroundColor: '#EC932F',
+          pointBorderColor: '#EC932F',
+          pointBackgroundColor: '#EC932F',
+          pointHoverBackgroundColor: '#EC932F',
+          pointHoverBorderColor: '#EC932F',
+          yAxisID: 'y-axis-1',
         },
         {
-          type: "line",
-          label: "Sentiment Rating",
+          type: 'line',
+          label: 'Sentiment Rating',
           data: sentimentData,
           fill: false,
-          backgroundColor: "#AED590",
-          borderColor: "#AED590",
-          hoverBackgroundColor: "#AED590",
-          hoverBorderColor: "#AED590",
-          yAxisID: "y-axis-2"
-        }
-      ]
+          backgroundColor: '#AED590',
+          borderColor: '#AED590',
+          hoverBackgroundColor: '#AED590',
+          hoverBorderColor: '#AED590',
+          yAxisID: 'y-axis-2',
+        },
+      ],
     };
 
     const options = {
       responsive: true,
       tooltips: {
-        mode: "label"
+        mode: 'label',
       },
       elements: {
         line: {
-          fill: false
-        }
+          fill: false,
+        },
       },
       scales: {
         xAxes: [
           {
             display: true,
             gridLines: {
-              display: false
-            }
+              display: false,
+            },
             // labels: {
             //   show: true
             // }
-          }
+          },
         ],
         yAxes: [
           {
-            type: "linear",
+            type: 'linear',
             display: true,
-            position: "left",
-            id: "y-axis-1",
+            position: 'left',
+            id: 'y-axis-1',
             gridLines: {
-              display: false
-            }
+              display: false,
+            },
             // labels: {
             //   show: true
             // }
           },
           {
-            type: "linear",
+            type: 'linear',
             display: true,
-            position: "right",
-            id: "y-axis-2",
+            position: 'right',
+            id: 'y-axis-2',
             gridLines: {
-              display: false
+              display: false,
             },
             ticks: {
               max: 100,
-              min: -100
-            }
+              min: -100,
+            },
             // labels: {
             //   show: true
             // }
-          }
-        ]
-      }
+          },
+        ],
+      },
     };
     const { classes } = this.props;
     return (
