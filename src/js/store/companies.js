@@ -183,9 +183,9 @@ const initialState = {
 		historicalArticles: []
 	},
 	aapl: {
-		recentPrice: 0,
+		recentPrice: 176.26,
 		historicalPrices: [],
-		sentiment: 1,
+		sentiment: [ {value: 1}, {value: 1}, {value: 1}, {value: 1}, {value: 1}, {value: 1}, {value: 1}, {value: 1} ],
 		recentArticle: {},
 		historicalArticles: []
 	},
