@@ -1,20 +1,20 @@
-import React from 'react';
-import { hot } from 'react-hot-loader';
-import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import green from '@material-ui/core/colors/green';
-import { Switch } from '@material-ui/core';
-import ArticleList from './components/ArticleList';
-import Chart from './components/Chart';
-import Settings from './components/Settings';
-import Search from './components/Search';
-import Divider from '@material-ui/core/Divider';
+import React from "react";
+import { hot } from "react-hot-loader";
+import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { withStyles } from "@material-ui/core/styles";
+import SettingsIcon from "@material-ui/icons/Settings";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
+import green from "@material-ui/core/colors/green";
+import { Switch } from "@material-ui/core";
+import ArticleList from "./components/ArticleList";
+import Chart from "./components/Chart";
+import Settings from "./components/Settings";
+import Search from "./components/Search";
+import Divider from "@material-ui/core/Divider";
 import {
   addNewCompany,
   fetchMostRecentPrice,
@@ -22,11 +22,11 @@ import {
   fetchHistoricalArticles,
   fetchSetting,
   fetchAverageSentiment,
-  removeCompany,
-} from '../store';
-import { storeThunker } from '../popup';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import CircularProgress from '@material-ui/core/CircularProgress';
+  removeCompany
+} from "../store";
+import { storeThunker } from "../popup";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 //--------------
 // for snackbar
@@ -46,76 +46,76 @@ const action = (
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    backgroundColor: '#faf9f9',
-    flexDirection: 'column',
-    width: '600px',
-    height: '100%',
-    alignItems: 'center',
-    padding: 10,
+    display: "flex",
+    backgroundColor: "#faf9f9",
+    flexDirection: "column",
+    width: "600px",
+    height: "100%",
+    alignItems: "center",
+    padding: 0
   },
   list: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column"
   },
   listItemNameButton: {
     margin: theme.spacing.unit,
-    display: 'flex',
+    display: "flex",
     flex: 1,
-    color: theme.palette.getContrastText('#c7d1d1'),
-    backgroundColor: '#a3dcac',
-    '&:hover': {
-      backgroundColor: '#128fa6',
-      color: '#FFFFFF',
-    },
+    color: theme.palette.getContrastText("#c7d1d1"),
+    backgroundColor: "#a3dcac",
+    "&:hover": {
+      backgroundColor: "#128fa6",
+      color: "#FFFFFF"
+    }
   },
   listItemDataButton: {
     margin: theme.spacing.unit,
-    display: 'flex',
+    display: "flex",
     flex: 4,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    textTransform: 'none',
-    color: theme.palette.getContrastText('#AED590'),
+    justifyContent: "space-between",
+    flexDirection: "row",
+    textTransform: "none",
+    color: theme.palette.getContrastText("#AED590"),
 
-    backgroundColor: '#d4f2ec',
-    '&:hover': {
-      backgroundColor: '#128fa6',
-      color: '#FFFFFF',
-    },
+    backgroundColor: "#d4f2ec",
+    "&:hover": {
+      backgroundColor: "#128fa6",
+      color: "#FFFFFF"
+    }
   },
   listItemSettingsButton: {
-    color: '#656565',
-    '&:hover': {
-      backgroundColor: '#128fa6',
-      color: '#FFFFFF',
-    },
+    color: "#656565",
+    "&:hover": {
+      backgroundColor: "#128fa6",
+      color: "#FFFFFF"
+    }
   },
   listItemDeleteButton: {
-    color: '#faf9f9',
-    '&:hover': {
-      backgroundColor: '#128fa6',
-      color: '#FFFFFF',
-    },
+    color: "#ffffff",
+    "&:hover": {
+      backgroundColor: "#128fa6",
+      color: "#FFFFFF"
+    }
   },
   listItem: {
-    display: 'flex',
+    display: "flex",
     width: 600,
-    alignItems: 'stretch',
+    alignItems: "stretch",
     borderTopWidth: 1,
     borderBottomWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: 'white',
-    borderStyle: 'solid',
+    borderColor: "white",
+    borderStyle: "solid"
   },
   sentimentContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center"
   },
   imageTitle: {
-    marginLeft: 50,
-  },
+    marginLeft: 50
+  }
 });
 // const CronJob = require('cron').CronJob;
 // const test = new CronJob('* * * * * *', function() {
@@ -126,8 +126,8 @@ class PopupHome extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCompany: '',
-      view: 'home',
+      selectedCompany: "",
+      view: "home"
     };
     this.goHome = this.goHome.bind(this);
   }
@@ -135,13 +135,10 @@ class PopupHome extends React.Component {
     Object.keys(this.props.companies).map(company =>
       this.props.getMostRecentPrice(company)
     );
-    this.props.getHistoricalPrices('aapl', '5d');
-    // Object.keys(this.props.companies).map(company =>
-    //   this.props.getHistoricalArticles(company)
-    // );
-    this.props.getHistoricalArticles('aapl');
-    this.props.getSetting('aapl');
-    this.props.getSentiment('aapl');
+    this.props.getHistoricalPrices("aapl", "5d");
+    this.props.getHistoricalArticles("aapl");
+    this.props.getSetting("aapl");
+    this.props.getSentiment("aapl");
   }
   resetList() {
     Object.keys(this.props.companies).map(company =>
@@ -151,8 +148,8 @@ class PopupHome extends React.Component {
 
   goHome() {
     this.setState({
-      selectedCompany: '',
-      view: 'home',
+      selectedCompany: "",
+      view: "home"
     });
   }
   render() {
@@ -167,15 +164,15 @@ class PopupHome extends React.Component {
     const { classes } = this.props;
 
     switch (this.state.view) {
-      case 'home':
+      case "home":
         return (
           <div className={classes.root}>
             <img
-              src={require('../../img/MAKESCENTS.png')}
+              src={require("../../img/MAKESCENTS.png")}
               style={{
-                display: 'flex',
+                display: "flex",
                 width: 650,
-                alignSelf: 'center',
+                alignSelf: "center"
               }}
             />
             <List className={classes.list}>
@@ -188,7 +185,7 @@ class PopupHome extends React.Component {
                 if (this.props.companies.aapl.sentiment[idx].value > 0) {
                   thumb = (
                     <img
-                      src={require('../../img/thumbsUp.png')}
+                      src={require("../../img/thumbsUp.png")}
                       style={{ width: 30, height: 30, marginLeft: 10 }}
                     />
                   );
@@ -197,14 +194,14 @@ class PopupHome extends React.Component {
                 ) {
                   thumb = (
                     <img
-                      src={require('../../img/thumbsDown.png')}
+                      src={require("../../img/thumbsDown.png")}
                       style={{ width: 30, height: 30, marginLeft: 10 }}
                     />
                   );
                 } else {
                   thumb = (
                     <img
-                      src={require('../../img/thumbsNeutral.png')}
+                      src={require("../../img/thumbsNeutral.png")}
                       style={{ width: 30, height: 30, marginLeft: 10 }}
                     />
                   );
@@ -218,7 +215,7 @@ class PopupHome extends React.Component {
                         onClick={() => {
                           this.setState({
                             selectedCompany: company,
-                            view: 'articleList',
+                            view: "articleList"
                           });
                         }}
                       >
@@ -229,7 +226,7 @@ class PopupHome extends React.Component {
                         onClick={() => {
                           this.setState({
                             selectedCompany: company,
-                            view: 'chart',
+                            view: "chart"
                           });
                         }}
                       >
@@ -252,7 +249,7 @@ class PopupHome extends React.Component {
                         onClick={() => {
                           this.setState({
                             selectedCompany: company,
-                            view: 'settings',
+                            view: "settings"
                           });
                         }}
                       >
@@ -293,17 +290,16 @@ class PopupHome extends React.Component {
             <Search addCompany={this.props.addCompany} />
           </div>
         );
-      case 'settings':
+      case "settings":
         return (
           <div className={classes.root}>
             <Settings
-              name={this.state.selectedCompany.name}
               onBackButtonClick={this.goHome}
               settingThreshold={settingThreshold}
             />
           </div>
         );
-      case 'chart':
+      case "chart":
         // layout
         if (!this.props.companies.aapl.historicalPrices) {
           return (
@@ -322,7 +318,7 @@ class PopupHome extends React.Component {
             />
           </div>
         );
-      case 'articleList':
+      case "articleList":
         if (!this.props.companies.aapl.historicalArticles) {
           return (
             <CircularProgress className={classes.progress} color="secondary" />
@@ -350,7 +346,7 @@ class PopupHome extends React.Component {
 }
 
 const mapState = state => ({
-  companies: state.companies,
+  companies: state.companies
 });
 
 const mapDispatch = dispatch => ({
@@ -366,7 +362,7 @@ const mapDispatch = dispatch => ({
     storeThunker.dispatch(fetchAverageSentiment(company)),
   deleteCompany: company => {
     dispatch(removeCompany(company));
-  },
+  }
 });
 
 export default withStyles(styles)(

@@ -24,15 +24,13 @@ const styles = theme => ({
     borderWidth: 10,
     borderColor: "#AED590",
     padding: 20,
-    marginLeft: 1,
-    marginRight: 1,
-    marginBottom: 1,
     marginTop: 5
   },
   titleContainer: {
     display: "flex",
-    marginTop: 10,
-    marginBottom: 10
+    paddingTop: 25,
+    paddingBottom: 15,
+    backgroundImage: `url(${require("../../../img/headerBackground.png")})`
   },
   title: {
     fontSize: 28,
