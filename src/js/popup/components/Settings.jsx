@@ -67,7 +67,7 @@ class Settings extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getSetting("aapl");
+    // this.props.getSetting('aapl');
     if (this.props.companies.aapl.setting) {
       const {
         priceHigh,
@@ -87,20 +87,26 @@ class Settings extends React.Component {
 
   async handleChange(event) {
     await this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: Number(event.target.value)
     });
     this.props.updateSetting("aapl", this.state);
   }
 
-  handleClick() {
-    this.props.removeSetting("aapl");
+  async handleClick() {
+    await this.setState({
+      priceHigh: 0,
+      priceLow: 0,
+      sentimentHigh: 0,
+      sentimentLow: 0
+    });
+    this.props.updateSetting("aapl", this.state);
   }
 
   render() {
-    if (!this.props.companies.aapl.setting) {
-      return <div />;
-    }
-    const { classes, settingThreshold } = this.props;
+    // if (!this.props.companies.aapl.setting) {
+    //   return <div />;
+    // }
+    const { classes } = this.props;
     console.log(
       "here is this.props.companies.aapl.setting",
       this.props.companies.aapl.setting
@@ -205,7 +211,6 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   updateSetting: (company, setting) =>
     storeThunker.dispatch(changeSetting(company, setting)),
-  removeSetting: company => storeThunker.dispatch(deleteSetting(company)),
   getSetting: company => storeThunker.dispatch(fetchSetting(company))
 });
 
