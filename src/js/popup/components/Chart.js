@@ -70,7 +70,7 @@ class Chart extends Component {
       const formattedDate = new Date(dateFilteredPrices[i].date)
         .toUTCString()
         .slice(0, 16);
-      obj.x = formattedDate;
+      obj.x = formattedDate.slice(5, 11);
       obj.y = dateFilteredPrices[i].close;
 
       // adding the previous day's price to the beginning of the graph
@@ -81,7 +81,7 @@ class Chart extends Component {
         );
         const addingPrice =
           historicalPricesArr[dateModifiedPricesArr.indexOf(formattedDate) - 1];
-        addingObj.x = monthAxis[0];
+        addingObj.x = monthAxis[0].slice(5, 11);
         addingObj.y = addingPrice.close;
         pricesData.push(addingObj);
       }
@@ -93,14 +93,14 @@ class Chart extends Component {
       if (i === dateFilteredPrices.length - 1) {
         if (!recentPrice) {
           const valueToAdd = pricesData[pricesData.length - 1].y;
-          pricesData.push({ x: today, y: valueToAdd });
+          pricesData.push({ x: today.slice(5, 11), y: valueToAdd });
         } else {
-          pricesData.push({ x: today, y: recentPrice });
+          pricesData.push({ x: today.slice(5, 11), y: recentPrice });
         }
       }
     }
 
-    pricesData.unshift({ labels: pricesData.map(elem => elem.x.slice(0, 11)) });
+    pricesData.unshift({ labels: pricesData.map(elem => elem.x) });
 
     // for sentiment data-----------------------------------
 
@@ -109,15 +109,16 @@ class Chart extends Component {
       // to get a value that is either negative, positive, or zero.
       return new Date(a.date) - new Date(b.date);
     });
+
     const dateFilteredSentiment = sentimentValue.filter(elem =>
-      monthAxis.includes(elem.date)
+      monthAxis.includes(new Date(elem.date).toUTCString().slice(0, 16))
     );
 
     // ---- sentimentData format looks like this --> {x: "Fri, 16 Nov 2018", y: 10}
     const sentimentData = [];
     for (let i = 0; i < dateFilteredSentiment.length; i++) {
       let obj = {};
-      obj.x = dateFilteredSentiment[i].date;
+      obj.x = dateFilteredSentiment[i].date.slice(5, 11);
       obj.y = dateFilteredSentiment[i].value;
 
       if (dateFilteredSentiment[0].date !== monthAxis[0]) {
@@ -127,21 +128,23 @@ class Chart extends Component {
           sentimentArr[
             dateOnlySentArr.indexOf(dateFilteredSentiment[0].date) - 1
           ];
-        addingObj.x = monthAxis[0];
+        addingObj.x = monthAxis[0].slice(5, 11);
         addingObj.y = addingSentiment.value;
         pricesData.push(addingObj);
       }
       sentimentData.push(obj);
     }
 
-    sentimentData.unshift({ labels: sentimentData.map(elem => elem.x) });
+    sentimentData.unshift({
+      labels: sentimentData.map(elem => elem.x),
+    });
 
-    console.log('monthAxis', monthAxis);
-    console.log('pricesData', pricesData);
+    // console.log('monthAxis', monthAxis);
+    // console.log('pricesData', pricesData);
     // console.log('sentimentData', sentimentData);
 
     const data = {
-      labels: monthAxis,
+      labels: monthAxis.map(elem => elem.slice(5, 11)),
       datasets: [
         {
           label: 'Stock Price',
