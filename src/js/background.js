@@ -14,14 +14,23 @@ const test = new CronJob(
 		console.log(store.getState().companies.aapl.recentPrice);
 		if (store.getState().companies.aapl.setting) {
 			let price = store.getState().companies.aapl.recentPrice;
-			let high = store.getState().companies.aapl.setting.priceHigh;
-			if (price > high) {
+			let priceHigh = store.getState().companies.aapl.setting.priceHigh;
+			let priceLow = store.getState().companies.aapl.setting.priceLow;
+			if (priceHigh < price) {
 				chrome.browserAction.setBadgeText({
 					text: 'AAPL'
 				});
 
 				chrome.browserAction.setBadgeBackgroundColor({
 					color: [ 0, 200, 0, 100 ]
+				});
+			} else if (priceLow > price) {
+				chrome.browserAction.setBadgeText({
+					text: 'AAPL'
+				});
+
+				chrome.browserAction.setBadgeBackgroundColor({
+					color: [ 200, 0, 0, 100 ]
 				});
 			} else {
 				chrome.browserAction.setBadgeText({
