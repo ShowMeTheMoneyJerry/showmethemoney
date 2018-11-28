@@ -231,7 +231,13 @@ const companies = (state = initialState, action) => {
 		case SET_MOST_RECENT_PRICE:
 			return Object.assign({}, state, {
 				[`${action.result.companyName}`]: {
-					recentPrice: action.result.data
+					recentPrice: action.result.data,
+					historicalPrices: state[action.result.companyName].historicalPrices,
+					view: state[action.result.companyName].view,
+					sentiment: state[action.result.companyName].sentiment,
+					recentArticle: state[action.result.companyName].recentArticle,
+					historicalArticles: state[action.result.companyName].historicalArticles,
+					setting: state[action.result.companyName].setting
 				}
 			});
 		// state[`${action.result.companyName}`].recentPrice = action.result.data;
