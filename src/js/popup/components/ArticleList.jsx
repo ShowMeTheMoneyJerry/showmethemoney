@@ -1,83 +1,83 @@
-import React from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import React from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const styles = theme => ({
   root: {
-    backgroundColor: "#faf9f9"
+    backgroundColor: '#faf9f9',
   },
   sectionTitle: {
     fontSize: 14,
-    marginLeft: 22
+    marginLeft: 22,
   },
   articleContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     borderTopWidth: 1,
     borderBottomWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: "white",
-    borderStyle: "solid"
+    borderColor: 'white',
+    borderStyle: 'solid',
   },
   titleContainer: {
-    display: "flex",
+    display: 'flex',
 
     marginBottom: 20,
     paddingTop: 25,
     paddingBottom: 25,
-    backgroundImage: `url(${require("../../../img/headerBackground.png")})`
+    backgroundImage: `url(${require('../../../img/headerBackground.png')})`,
   },
   title: {
     fontSize: 28,
-    fontFamily: "Impact",
+    fontFamily: 'Impact',
     fontSize: 33,
     marginRight: 64,
-    color: "#333",
-    width: "100%",
-    textAlign: "center",
-    fontWeight: "bold"
+    color: '#333',
+    width: '100%',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   articleTitleContainer: {
     marginLeft: 20,
-    display: "flex",
+    display: 'flex',
     padding: 5,
-    flexDirection: "column"
+    flexDirection: 'column',
   },
   articleTitle: {
     fontSize: 15,
     flex: 1,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   sentiment: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     fontSize: 10,
     borderRadius: 4,
     padding: 10,
     width: 15,
     height: 15,
-    backgroundColor: "#AED590"
+    backgroundColor: '#AED590',
   },
   date: {
     fontSize: 10,
     marginBottom: 3,
-    fontWeight: "bold",
-    color: "#717171"
+    fontWeight: 'bold',
+    color: '#717171',
   },
   link: {
-    "&:link": {
-      color: "black"
+    '&:link': {
+      color: 'black',
     },
-    "&:hover": {
-      color: "#128fa6"
-    }
-  }
+    '&:hover': {
+      color: '#128fa6',
+    },
+  },
 });
 class ArticleList extends React.Component {
   render() {
@@ -94,7 +94,7 @@ class ArticleList extends React.Component {
           </Button>
           <div className={classes.title}>Articles</div>
         </div>
-        <div className={classes.sectionTitle}>Score</div>
+        <div className={classes.sectionTitle}>Sentiment</div>
         <List>
           {this.props.articles.map((article, idx) => {
             const date = new Date(article.date);
