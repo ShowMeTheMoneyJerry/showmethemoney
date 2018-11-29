@@ -11,7 +11,7 @@ const styles = theme => ({
   },
   sectionTitle: {
     fontSize: 14,
-    marginLeft: 22,
+    marginLeft: 10,
   },
   articleContainer: {
     display: 'flex',
